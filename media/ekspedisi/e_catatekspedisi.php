@@ -38,7 +38,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                         <form class='form-horizontal' method='POST' action='<?php echo "$aksi?module=e_catekspedisi&act=catatSurat"; ?>' enctype='multipart/form-data'>
                                             <div class="form-group row">
                                                 <div class="col-md-2">
-                                                    <label>Tanggal Terima (PPT)</label>
+                                                    <label>Tanggal Kirim</label>
                                                     <div class="input-group date">
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar"></i>
@@ -117,6 +117,14 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                     <label>Alamat Surat Tujuan </label>
                                                     <textarea class="form-control" rows="4" name='tujuanSurat' placeholder="Enter ..."><?php echo "$_POST[tujuanSurat]"; ?></textarea>
                                                     <small> Input Tujuan / Alamat Surat </small>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <label>Deskripsikan Isi </label>
+                                                    <textarea class="form-control" rows="4" name='deskIsi' placeholder="Enter ..."><?php echo "$_POST[deskIsi]"; ?></textarea>
+                                                    <small> Deskripsikan Isi Surat yang akan dikirim </small>
                                                 </div>
                                             </div>
 

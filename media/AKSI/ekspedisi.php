@@ -30,6 +30,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 								e_nosurat	= '$_POST[noSurat]',
 								e_flag		= '1',
 								e_satker	= '$_POST[satker]',
+								e_deskisi	= '$_POST[deskIsi]',
 								e_instansi	= '$_POST[instansi]',
 								e_unitkirim	= '$_POST[unut]'");
 ?>
