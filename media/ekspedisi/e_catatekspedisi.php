@@ -12,7 +12,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
         $aksi = "media/AKSI/ekspedisi.php";
         switch ($_GET['act']) {
             default:
-                if ($_SESSION['LEVEL'] == 'admin') {
+                if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
                     $sql = "SELECT * FROM s_settgl ORDER BY idtgl ASC";
                     $tgl = mysqli_query($koneksi,$sql);
                     $rs = mysqli_fetch_array($tgl);
@@ -80,7 +80,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-12">
-                                                    <label>Unit</label>
+                                                    <label>Instansi Tujuan</label>
                                                     <select class="form-control s2" style="width: 100%" name='instansi'>
                                                         <option value='BLANK'>PILIH</option>
                                                         <?php
@@ -106,7 +106,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 
                                             <div class="form-group row">
                                                 <div class="col-md-12">
-                                                    <label>Asal Instansi</label>
+                                                    <label>Tujuan Satuan Kerja</label>
                                                     <input type="text" class="form-control" placeholder="Nama Satuan Kerja (Instansi)" name="satker" value='<?php echo "$_POST[satker]"; ?>'>
                                                     <small> Input Nama Instansi </small>
                                                 </div>

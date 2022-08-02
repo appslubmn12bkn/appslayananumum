@@ -12,7 +12,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
         $aksi = "media/aksi/ekspedisi.php";
         switch ($_GET['act']) {
             default:
-                if ($_SESSION['LEVEL'] == 'admin') {
+                if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
                     $sql = "SELECT * FROM s_settgl ORDER BY idtgl ASC";
                     $tgl = mysqli_query($koneksi,$sql);
                     $rs = mysqli_fetch_array($tgl);

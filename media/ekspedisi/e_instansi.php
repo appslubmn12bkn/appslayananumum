@@ -40,7 +40,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                         <div class='ibox-body'> 
                                                 <form method='post' class='form-horizontal' action=''>
                                                     <div class='form-group row'>
-                                                        <div class='col-sm-10'>
+                                                        <div class='col-sm-9'>
                                                         <input type="text" class="form-control" placeholder="Ketik Nama Instansi" name="mas_masints" value='<?php echo "$_POST[mas_masints]"; ?>'>
                                                         </div>
                                                     <button type='submit' name='preview' class='btn btn-ms btn-primary'>
@@ -84,7 +84,8 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                     <?php
                                                     $sql = "SELECT  INS_KODINS,INS_NAMINS,INS_KODANGKA
                                                             FROM m_instansi
-                                                            WHERE INS_NAMINS LIKE '%$_POST[mas_masints]%'
+                                                            WHERE INS_NAMINS LIKE '%$_POST[mas_masints]%' 
+                                                            AND INS_KODINS LIKE '%$_POST[mas_masints]%'
                                                             ORDER BY INS_NAMINS ASC";
                                                     $tabel = mysqli_query($koneksi,$sql);
                                                     $numRows = mysqli_num_rows($tabel);
