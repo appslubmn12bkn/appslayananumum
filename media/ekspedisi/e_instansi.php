@@ -40,12 +40,13 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                         <div class='ibox-body'> 
                                                 <form method='post' class='form-horizontal' action=''>
                                                     <div class='form-group row'>
-                                                        <div class='col-sm-9'>
+                                                        <div class='col-sm-12'>
                                                         <input type="text" class="form-control" placeholder="Ketik Nama Instansi" name="mas_masints" value='<?php echo "$_POST[mas_masints]"; ?>'>
+                                                        <small>keyword : Nama Instansi / Kode Instansi</small>
                                                         </div>
-                                                    <button type='submit' name='preview' class='btn btn-ms btn-primary'>
-                                                    Detail</button>
                                                     </div>
+                                                    <button type='submit' name='preview' class='btn btn-ms btn-primary'>
+                                                    <i class="fa fa-search"></i>&nbsp;&nbsp;Detail</button>
                                                 </form> 
                                                 <?php
                                                 $sql = "SELECT  INS_KODINS,INS_NAMINS
@@ -85,7 +86,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                     $sql = "SELECT  INS_KODINS,INS_NAMINS,INS_KODANGKA
                                                             FROM m_instansi
                                                             WHERE INS_NAMINS LIKE '%$_POST[mas_masints]%' 
-                                                            AND INS_KODINS LIKE '%$_POST[mas_masints]%'
+                                                            OR INS_KODINS LIKE '%$_POST[mas_masints]%'
                                                             ORDER BY INS_NAMINS ASC";
                                                     $tabel = mysqli_query($koneksi,$sql);
                                                     $numRows = mysqli_num_rows($tabel);

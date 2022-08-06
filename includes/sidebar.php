@@ -22,66 +22,80 @@
                     </div>
                 </div>
                 <ul class="side-menu metismenu">
-                    <li class="heading">LAYANAN UMUM</li>
+                    <li class="heading">MENU LAYANAN UMUM</li>                   
+                    <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
                     <li>
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-bookmark"></i>
                             <span class="nav-label">Referensi</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
-                            <li><a href="#"> Kendaraan Dinas</a></li>
-                            <li><a href="#">Ruangan</a></li>
-                            <li><a href="?module=tbl_stokbrg">Daftar Stok Barang</a></li>
-                            <li><a href="?module=tbl_brg">Tabel Barang</a></li> 
+                            <?php include 'mn_side/mn_referensi.php';?>
                         </ul>
                     </li>
+                    <?php } ?>
+
+                    <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
                     <li>
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-address-card-o"></i>
                             <span class="nav-label">Ekspedisi Surat</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
-                            <li><a href="?module=e_instansi">Master Instansi</a></li>
-                            <li><a href="?module=e_catekspedisi">Surat Keluar (Kirim)</a></li>
-                            <li><a href="?module=ct_ekpedisi">Cetak Tanda Terima</a></li>
-                            <li><a href="?module=paket">Daftarkan Paket (Masuk)</a></li> 
+                            <?php include 'mn_side/mn_ekpedisisurat.php';?>
                         </ul>
                     </li>
+                    <?php } ?>
+
+                    <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
                     <li>
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-opencart"></i>
                             <span class="nav-label">Persediaan</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
-                            <li><a href="?module=sedia_pengajuan">Permohonan</a></li>
-                            <li><a href="?module=c_printsedia">Print Pengajuan</a></li>
-                            <li><a href="?module=c_cekstatus">Status Pengajuan</a></li>
+                            <?php include 'mn_side/mn_persediaan.php';?>
                         </ul>
                     </li>
+                    <?php } ?>
+
+                    <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
                     <li>
-                        <a href="#"><i class="sidebar-item-icon fa fa-automobile"></i>
-                            <span class="nav-label">Kendaraan Dinas</span>
-                        </a>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-automobile"></i>
+                            <span class="nav-label">Kendaraan Dinas</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <?php include 'mn_side/mn_mobnas.php';?>
+                        </ul>
                     </li>
+                    <?php } ?>
+
+                    <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
                     <li>
-                        <a href="#"><i class="sidebar-item-icon fa fa-recycle"></i>
-                            <span class="nav-label">Lapor Kerusakan</span>
-                        </a>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-recycle"></i>
+                            <span class="nav-label">Pemeliharaan</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <?php  include  'mn_side/mn_pelihara.php';?>
+                        </ul>
                     </li>
+                    <?php } ?>
+
+                    <!-- UNDER CONSTRUCTION -->
+
+                    <?php if($cek==1 OR $_SESSION[LEVEL]=='admin'){ ?>
                     <li>
-                        <a href="#"><i class="sidebar-item-icon fa fa-recycle"></i>
-                            <span class="nav-label">Pemeliharaan</span>
-                        </a>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-thumbs-up"></i>
+                            <span class="nav-label">Pinjam Pakai</span>
+                            <i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <?php // include 'mn_side/mn_persediaan.php';?>
+                        </ul>
                     </li>
+                    <?php } ?>
+
+                    <?php if($cek==1 OR $_SESSION[LEVEL]=='admin'){ ?>
                     <li>
-                        <a href="#"><i class="sidebar-item-icon fa fa-thumbs-up"></i>
-                            <span class="nav-label">Peminjaman BMN</span>
-                        </a>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-book"></i>
+                            <span class="nav-label">Permintaan Blanko</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <?php // include 'mn_side/mn_persediaan.php';?>
+                        </ul>
                     </li>
-                    <li>
-                        <a href="#"><i class="sidebar-item-icon fa fa-building"></i>
-                            <span class="nav-label">Pinjam Ruangan</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="sidebar-item-icon fa fa-book"></i>
-                            <span class="nav-label">Permintaan Blanko</span>
-                        </a>
-                    </li>
+                    <?php } ?>
+
                 </ul>
             </div>
         </nav>
