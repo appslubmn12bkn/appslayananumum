@@ -16,13 +16,10 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
         switch ($_GET['act']) {
             default:
                 if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
-                    $tgl = mysqli_query($koneksi,
-                        "SELECT s_tglawal, s_tglakhir, s_thnang FROM s_settgl
-                         ORDER BY idtgl ASC");
-                    $rs        = mysqli_fetch_array($tgl);
+                    $query  = "SELECT s_tglawal, s_tglakhir, s_thnang FROM s_settgl ORDER BY idtgl ASC";
+                    $tgl    = mysqli_query($koneksi,$query);
+                    $rs     = mysqli_fetch_array($tgl);
                     $update = date('Y-m-d');
-
-
 ?>
                     <section class="page-heading fade-in-up">
                       <h4 class="page-title">
@@ -38,10 +35,9 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                     <!-- MODAL DAFTAR UNIT -->
                     <?php
                     $kode = rand(0,999999);
-                    $data = mysqli_fetch_array(mysqli_query($koneksi,
-                    "SELECT MAX(register) AS akhir
-                    FROM c_unitsediaminta
-                    WHERE register LIKE '%$kode%'"));
+                    $sql = "SELECT MAX(register) AS akhir FROM c_unitsediaminta WHERE register LIKE '%$kode%'"; 
+                    $dtsql = mysqli_query($koneksi,$sql);
+                    $data = mysqli_fetch_array($dtsql);
                     $lastindex  = $data['akhir'];
                     $kdReg      = $kode . sprintf($lastindex);
                     ?>

@@ -16,10 +16,9 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
         switch ($_GET['act']) {
             default:
                 if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
-                    $tgl = mysqli_query($koneksi,
-                        "SELECT s_tglawal, s_tglakhir, s_thnang FROM s_settgl
-                         ORDER BY idtgl ASC");
-                    $rs        = mysqli_fetch_array($tgl);
+                    $query  = "SELECT s_tglawal, s_tglakhir, s_thnang FROM s_settgl ORDER BY idtgl ASC"
+                    $tgl    = mysqli_query($koneksi,$query);
+                    $rs     = mysqli_fetch_array($tgl);
                     $update = date('Y-m-d');
 
 ?>
@@ -41,7 +40,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                         <strong>NOMOR REGISTRASI : </strong>
                                                 <form method='post' class='form-horizontal' action=''>
                                                     <div class='form-group row'>
-                                                        <div class='col-sm-10'>
+                                                        <div class='col-sm-9'>
                                                             <select class="form-control" style="width: 100%" 
                                                             name='registrasi'>
                                                                 <option value=''></option>
