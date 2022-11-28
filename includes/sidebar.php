@@ -61,6 +61,16 @@
 
                     <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
                     <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-plane"></i>
+                            <span class="nav-label">Barang Milik Negara</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <?php include 'mn_side/mn_bmn.php';?>
+                        </ul>
+                    </li>
+                    <?php } ?>
+
+                    <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
+                    <li>
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-automobile"></i>
                             <span class="nav-label">Kendaraan Dinas</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">

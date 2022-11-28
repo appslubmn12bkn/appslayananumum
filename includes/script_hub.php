@@ -144,7 +144,7 @@ $(document).ready(function(){
     paging: true,
     responsive  : true,
     searching: true,
-    ordering: true,
+    ordering: false,
     info: true,
     "language": {
       "search": "Cari:",
@@ -182,7 +182,7 @@ $(document).ready(function(){
     $('#table_4').DataTable({
       'paging'      : true,
       'lengthChange': false,
-      'searching'   : true,
+      'searching'   : false,
       'responsive'  : true,
       'ordering'    : true,
       'info'        : false,

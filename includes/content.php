@@ -251,10 +251,12 @@ SEDANG PROSES
   if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
     include 'media/sedia_tabel/tabelpsedia_stock.php';
   }
-} elseif ($_GET['module'] == 'sedia_pengajuan') {
+} 
+elseif ($_GET['module'] == 'sedia_pengajuan') {
   if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
     include 'media/sedia_permohonan/sedia_pengajuan.php';
   }
+
 } elseif ($_GET['module'] == 'c_printsedia') {
   if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
     include 'media/sedia_aksiunit/sedia_cetak.php';
@@ -290,6 +292,25 @@ elseif ($_GET['module'] == 'ct_ekpedisi') {
 elseif ($_GET['module'] == 'paket') {
   if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
     include 'media/ekspedisi/e_ambilpaket.php';
+  }
+}
+
+//MENU BMN
+elseif ($_GET['module'] == 'bmnMaster') {
+  if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
+    include 'media/bmn/bmnMaster.php';
+  }
+}
+
+elseif ($_GET['module'] == 'bmnHistory') {
+  if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
+    include 'media/bmn/bmnHistory.php';
+  }
+}
+
+elseif ($_GET['module'] == 'bmnTambah') {
+  if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
+    include 'media/bmn/bmnTambah.php';
   }
 }
 
