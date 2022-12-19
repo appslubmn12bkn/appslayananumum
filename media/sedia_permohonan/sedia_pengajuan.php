@@ -275,7 +275,6 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                         <i class="fa fa-search"></i> </button></td>
                                                         </form>
                                                         </td>
-                                                        
                                                     </tr>
                                                 <?php } ?>
                                                 <tfoot>

@@ -197,6 +197,25 @@ $(document).ready(function(){
     'responsive': true,
     'stateSave': true // keep paging
     })
+
+    $('#table_5').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'responsive'  : true,
+      'ordering'    : true,
+      'info'        : false,
+      'autoWidth'   : true,
+      "language": {
+      "search": "Cari:",
+      "lengthMenu": "Tampilkan _MENU_ baris",
+      "zeroRecords": "Maaf - Data tidak ada",
+      "infoEmpty": "Tidak ada data",
+      "infoFiltered": "(pencarian dari _MAX_ data)"
+    },
+    'responsive': true,
+    'stateSave': true // keep paging
+    })
   </script>
 
 

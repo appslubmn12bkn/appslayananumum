@@ -154,54 +154,44 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
                                 </div>
                                 <div class='ibox-body'> 
                                 <form method="POST" action="">
-                                        <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label">Filter Pencarian</label>
-                                            <div class="col-sm-2">
+                                   <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Pencarian Kodefikasi</label>
+                                        <div class="col-sm-5">
                                             <div class="form-group">
-                                                <select name="s_filter" id="s_filter" class="form-control">
-                                                <option value="">Filter</option>
-                                                <option value="kd_brg"<?php if ($s_filter=="kd_brg"){ echo "selected"; } ?>>Kode Barang</option>
-                                                <option value="nm_brg" <?php if ($s_filter=="nm_brg"){ echo "selected"; } ?>>Nama Barang
-                                                </option>
-                                                </select>
+                                                <select class="form-control s2" name='kd_brg'>
+                                                  <option value='BLANK'>PILIH</option>
+                                                  <?php
+                                                    $dataSql = "SELECT a.kd_brg, a.ur_sskel, a.satuan
+                                                                FROM  b_nmbmn a 
+                                                                ORDER BY kd_brg ASC";
+                                                    $dataQry = mysqli_query($koneksi, $dataSql) or die ("Gagal Query".mysql_error());
+                                                    while ($dataRow = mysqli_fetch_array($dataQry)) {
+                                                    if ($dataRow['kd_brg']==$_POST['kd_brg']) {
+                                                      $cek = " selected";
+                                                    } else { $cek=""; }
+                                                    echo "
+                                                  <option value='$dataRow[kd_brg]' $cek>$dataRow[kd_brg]  -  $dataRow[ur_sskel]</option>";
+                                                    }
+                                                    $sqlData ="";
+                                                    ?>
+                                                  </select>
                                             </div>
-                                            </div>
+                                        <button type="submit" class='btn btn-danger btn-sm'><i class="fa fa-search"></i> Tampilkan</button>
                                         </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label">Kata Kunci</label>
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <input type="text" placeholder="Keyword" name="s_keyword" id="s_keyword" class="form-control" value="<?php if (isset($_GET['s_keyword'])) {echo $_GET['s_keyword'];} ?>" maxlength="10">
-                                                    </div>
-                                                </div>
-                                            <div class="col-sm-4" >
-                                            <button id="history" name="history" class="btn btn-danger">
-                                                <i class="fa fa-search"></i> Tampilkan</button>
-                                            </div>
-                                        </div>
-
-
-                                        
+                                    </div>                                        
                                 </form>
-                                                        <?php
-                                                        $brg = mysqli_query(
-                                                            $koneksi,
-                                                            " SELECT a.kd_brg, a.ur_sskel, a.satuan
-                                                            FROM b_nmbmn a
-                                                            WHERE a.kd_brg LIKE '%$_POST[s_keyword]%' 
-                                                            OR a.ur_sskel LIKE '%$_POST[s_keyword]%' 
-                                                            ORDER BY nourut ASC"
-                                                        );
-                                                        $r = mysqli_fetch_array($brg);
-                                                        $ceka = mysqli_num_rows($brg);
-                                                        if (isset($_POST['s_keyword']) && $ceka == 0) {
-                                                            echo "
-
-                                                                <h4><i class='ik ik-alert-octagon'></i> Pemberitahuan!</h4>
-                                                                Coba Lagi
-                                                                ";
-                                                        } else {
-                                                        ?>
+                                  <?php
+                                    $a = mysqli_query($koneksi,
+                                    " SELECT a.kd_brg, a.ur_sskel, a.satuan
+                                      FROM   b_nmbmn a
+                                      WHERE  a.kd_brg='$_POST[kd_brg]'");
+                                    $r = mysqli_fetch_array($a);
+                                    $cekdata = mysqli_num_rows($a);
+                                    if(isset($_POST['kd_brg']) && $cekdata==0 ){
+                                      echo "
+                                      <h4>Ulang Lagi</h4>";
+                                    }else{
+                                  ?>
                                 <form method='post' class='form-horizontal' action='<?php echo "$aksi?module=bmnTambah&act=bmnBaru"; ?>' enctype='multipart/form-data'>
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label"></label>
@@ -212,7 +202,131 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
                                         <div class="col-sm-5">
                                         <input type="text" class="form-control" name='nm_brg' id="nm_brg" value='<?php echo "$r[ur_sskel]"; ?>' readonly>
                                         </div>
+
+                                        <div class="col-sm-2">
+                                        <input type="text" class="form-control" name='satuan' id="satuan" value='<?php echo "$r[satuan]"; ?>' readonly>
+                                        </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Jenis Transaksi (Trx)</label>
+                                        <div class="col-sm-4">
+                                            <select class="form-control s2" name='jns_trn'>
+                                                <option value='BLANK'>PILIH</option>
+                                                <option value='101'>101 - Pembelian [Pengadaan Sendiri]</option>
+                                                <option value='102'>102 - Transfer Masuk [Pengadaan Pusat]</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Jumlah BMN</label>
+                                        <div class="col-sm-1">
+                                        <input type="text" maxlength="3" class="form-control" name='qty' id="qty" value='<?php echo "$_POST[qty]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">No Aset</label>
+                                        <div class="col-sm-1">
+                                        <input type="text" class="form-control" maxlength="3" name='nupAW' id="nupAW" value='<?php echo "$_POST[nupAW]"; ?>'>
+                                        <small>Awal</small>
+                                        </div>
+
+                                        <div class="col-sm-1">
+                                        <input type="text" class="form-control" maxlength="3" name='nupAK' id="nupAK" value='<?php echo "$_POST[nupAK]"; ?>' readonly>
+                                        <small>Akhir</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Kuantitas Trx</label>
+                                        <div class="col-sm-1">
+                                        <input type="text" maxlength="3" class="form-control" name='b_kuantitas' id="b_kuantitas" value='<?php echo "$_POST[b_kuantitas]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Tanggal Transaksi</label>
+                                        <div class="col-sm-2">
+                                        <input type="text" maxlength="3" class="form-control" name='b_tgltrn' id="b_tgltrn" value='<?php echo date("Y-m-d"); ?>' readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Tanggal Perolehan</label>
+                                        <div class="col-sm-2">
+                                        <input type="text" maxlength="3" class="form-control" name='b_tglperlh' id="b_tglperlh" value='<?php echo "$_POST[b_tglperlh]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Tanggal Pembukuan</label>
+                                        <div class="col-sm-2">
+                                        <input type="text" maxlength="3" class="form-control" name='b_tglbuku' id="b_tglbuku" value='<?php echo "$_POST[b_tglbuku]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Rupiah Aset</label>
+                                        <div class="col-sm-2">
+                                        <input type="text" class="form-control" name='b_rphaset' id="b_rphaset" value='<?php echo "$_POST[b_rphaset]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Kondisi BMN</label>
+                                        <div class="col-sm-3">
+                                            <select class="form-control s2" name='b_kondisi'>
+                                                <option value='BLANK'>PILIH</option>
+                                                <option value='1'>BB - Barang Baik</option>
+                                                <option value='2'>RR - Rusak Ringan</option>
+                                                <option value='3'>RB - Rusak Berat</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">BMN Tercatat</label>
+                                        <div class="col-sm-3">
+                                            <select class="form-control s2" name='b_tercatat'>
+                                                <option value='BLANK'>PILIH</option>
+                                                <option value='1'>DBR - Daftar Barang Ruangan</option>
+                                                <option value='2'>DBL - Daftar Barang Lainnya</option>
+                                                <option value='3'>KIB - Kartu Induk Barang</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Asal Perolehan</label>
+                                        <div class="col-sm-10">
+                                        <input type="text" class="form-control" name='b_bmnasalperlh' id="b_bmnasalperlh" value='<?php echo "$_POST[b_bmnasalperlh]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Merek / Type</label>
+                                        <div class="col-sm-10">
+                                        <input type="text" class="form-control" name='b_merektype' id="b_merektype" value='<?php echo "$_POST[b_merektype]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Keterangan</label>
+                                        <div class="col-sm-10">
+                                        <input type="text" class="form-control" name='b_keterangan' id="b_keterangan" value='<?php echo "$_POST[b_keterangan]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <fieldset>
+                                    <label for='Kode' class='col-sm-2 control-label'></label>
+                                    <button type=submit value=Simpan Data class='btn btn-primary btn-md'>
+                                    <i class='fa fa-check'></i>&nbsp;&nbsp;&nbsp;Simpan </button></a>
+
+                                    <button type=reset value=Simpan Data class='btn btn-danger btn-md'>
+                                    <i class='fa fa-times'></i>&nbsp;&nbsp;&nbsp; Clear </button></a>
+                                    </fieldset>
 
                                 </form>
                                 <?php } ?>                                        
