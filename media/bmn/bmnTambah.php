@@ -85,7 +85,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                                      a.b_kuantitas, a.b_rphaset,
                                                                      a.b_merektype, a.b_bmntrn,
                                                                      b.kd_brg, b.ur_sskel, b.satuan
-                                                                FROM b_bmnBaru a
+                                                                FROM b_bmnbaru a
                                                                 LEFT JOIN b_nmbmn b ON b.kd_brg = a.b_kdbrg
                                                                 WHERE a.b_tglperlh BETWEEN '$rs[s_tglawal]' 
                                                                 AND '$rs[s_tglakhir]'
@@ -141,7 +141,7 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
                 <section class="page-heading fade-in-up">
                     <h4 class="page-title">
                         Transaksi Aset / Barang Milik Negara<br>
-                        <h6>Tambah</h6>
+                        <span class="badge badge-success badge-pill m-r-5 m-b-5">Tambah BMN Baru</span>
                       </h4>
                 </section>
                 <section class='content fade-in-up'>
@@ -153,48 +153,69 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
                                     <div class='ibox-title'>TA : <?php echo "$rs[s_thnang]"; ?></div>
                                 </div>
                                 <div class='ibox-body'> 
-                                <form method='post' class='form-horizontal' action='' enctype='multipart/form-data'>
-                                    <div class="form-group row">
-                                    <div class="col-sm-5">
-                                        <label>Kode Barang (BMN)</label>
-                                        <select class="form-control s2"  name='kd_brg' onchange="this.form.submit();">
-                                            <option value='BLANK'>PILIH</option>
-                                            <?php
-                                                $dataSql = 
-                                                "SELECT kd_brg, ur_sskel, satuan FROM b_nmbmn ORDER BY kd_brg ASC";
-                                                $dataQry = mysqli_query($koneksi, $dataSql) or die("Gagal Query" . mysqli_error($koneksi));
-                                                while ($dataRow = mysqli_fetch_assoc($dataQry)) {
-                                                if ($dataRow['kd_brg'] == $_POST['kd_brg']) {
-                                                $cek = " selected"; } else { $cek = ""; }
-                                                echo "
-                                                <option value='$dataRow[kd_brg]' $cek>$dataRow[kd_brg] - $dataRow[ur_sskel]</option>";
-                                                }
-                                                $sqlData = "";
-                                            ?>
-                                        </select>
-                                        <small> Pilih Kode Barang : 31001xxx / Nama Barang </small>
-                                    </div>
-                                    </div>
-                                </form>
-                                <?php
-                                    $brg = mysqli_query(
-                                    $koneksi,
-                                    " SELECT    a.kd_brg, a.ur_sskel, a.satuan
-                                    FROM b_nmbmn a
-                                    WHERE kd_brg = '$_POST[kd_brg]'
-                                    ORDER BY nourut ASC");
-                                    $a = mysqli_fetch_array($brg);
-                                    $ceka = mysqli_num_rows($brg);
-                                    if (isset($_POST['cari']) && $ceka == 0) {
-                                    echo "
-                                    <div class='alert bg-danger alert-danger text-white' role='alert'>
-                                    <h4><i class='ik ik-alert-octagon'></i> Pemberitahuan!</h4>
-                                    Coba Lagi
-                                    </div>";
-                                    } else {
-                                ?>
+                                <form method="POST" action="">
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">Filter Pencarian</label>
+                                            <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <select name="s_filter" id="s_filter" class="form-control">
+                                                <option value="">Filter</option>
+                                                <option value="kd_brg"<?php if ($s_filter=="kd_brg"){ echo "selected"; } ?>>Kode Barang</option>
+                                                <option value="nm_brg" <?php if ($s_filter=="nm_brg"){ echo "selected"; } ?>>Nama Barang
+                                                </option>
+                                                </select>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">Kata Kunci</label>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <input type="text" placeholder="Keyword" name="s_keyword" id="s_keyword" class="form-control" value="<?php if (isset($_GET['s_keyword'])) {echo $_GET['s_keyword'];} ?>" maxlength="10">
+                                                    </div>
+                                                </div>
+                                            <div class="col-sm-4" >
+                                            <button id="history" name="history" class="btn btn-danger">
+                                                <i class="fa fa-search"></i> Tampilkan</button>
+                                            </div>
+                                        </div>
 
-                                    <?php } ?>                                        
+
+                                        
+                                </form>
+                                                        <?php
+                                                        $brg = mysqli_query(
+                                                            $koneksi,
+                                                            " SELECT a.kd_brg, a.ur_sskel, a.satuan
+                                                            FROM b_nmbmn a
+                                                            WHERE a.kd_brg LIKE '%$_POST[s_keyword]%' 
+                                                            OR a.ur_sskel LIKE '%$_POST[s_keyword]%' 
+                                                            ORDER BY nourut ASC"
+                                                        );
+                                                        $r = mysqli_fetch_array($brg);
+                                                        $ceka = mysqli_num_rows($brg);
+                                                        if (isset($_POST['s_keyword']) && $ceka == 0) {
+                                                            echo "
+
+                                                                <h4><i class='ik ik-alert-octagon'></i> Pemberitahuan!</h4>
+                                                                Coba Lagi
+                                                                ";
+                                                        } else {
+                                                        ?>
+                                <form method='post' class='form-horizontal' action='<?php echo "$aksi?module=bmnTambah&act=bmnBaru"; ?>' enctype='multipart/form-data'>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label"></label>
+                                        <div class="col-sm-2">
+                                        <input type="text" class="form-control" name='kd_brg' id="kd_brg" value='<?php echo "$r[kd_brg]"; ?>' readonly>
+                                        </div>
+
+                                        <div class="col-sm-5">
+                                        <input type="text" class="form-control" name='nm_brg' id="nm_brg" value='<?php echo "$r[ur_sskel]"; ?>' readonly>
+                                        </div>
+                                    </div>
+
+                                </form>
+                                <?php } ?>                                        
                                         </div>
                                     </div>
                                 </div>
