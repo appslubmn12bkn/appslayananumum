@@ -12,7 +12,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 } else {
     $cek = user_akses($_GET['module'], $_SESSION['NIP']);
     if ($cek == 1 or $_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
-      //  $aksi = "media/aksi/pengajuan.php";
+      //  $aksi = "media/AKSI/bmn.php";
         switch ($_GET['act']) {
             default:
                 if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
@@ -222,27 +222,20 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Jumlah BMN</label>
                                         <div class="col-sm-1">
-                                        <input type="text" maxlength="3" class="form-control" name='qty' id="qty" value='<?php echo "$_POST[qty]"; ?>'>
+                                        <input type="text" maxlength="3" class="form-control" name='qty' id="qty" value='<?php echo "$_POST[qty]"; ?>' onkeyup=sum2();>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">No Aset</label>
                                         <div class="col-sm-1">
-                                        <input type="text" class="form-control" maxlength="3" name='nupAW' id="nupAW" value='<?php echo "$_POST[nupAW]"; ?>'>
+                                        <input type="text" class="form-control" maxlength="3" name='nupAW' id="nupAW" value='<?php echo "$_POST[nupAW]"; ?>' onkeyup=sum2();>
                                         <small>Awal</small>
                                         </div>
 
                                         <div class="col-sm-1">
                                         <input type="text" class="form-control" maxlength="3" name='nupAK' id="nupAK" value='<?php echo "$_POST[nupAK]"; ?>' readonly>
                                         <small>Akhir</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Kuantitas Trx</label>
-                                        <div class="col-sm-1">
-                                        <input type="text" maxlength="3" class="form-control" name='b_kuantitas' id="b_kuantitas" value='<?php echo "$_POST[b_kuantitas]"; ?>'>
                                         </div>
                                     </div>
 
@@ -264,6 +257,13 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
                                         <label class="col-sm-2 col-form-label">Tanggal Pembukuan</label>
                                         <div class="col-sm-2">
                                         <input type="text" maxlength="3" class="form-control" name='b_tglbuku' id="b_tglbuku" value='<?php echo "$_POST[b_tglbuku]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Kuantitas Trx</label>
+                                        <div class="col-sm-1">
+                                        <input type="text" maxlength="3" class="form-control" name='b_kuantitas' id="b_kuantitas" value='1' readonly>
                                         </div>
                                     </div>
 
