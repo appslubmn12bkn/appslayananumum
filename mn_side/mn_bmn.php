@@ -18,9 +18,9 @@ if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
 <li><a href="?module=bmnTambah">Tambah Aset</a></li>
 <?php }
 
-$cek=umenu_akses("?module=bmnTmasuk",$_SESSION[NIP]);
+$cek=umenu_akses("?module=bmnUpload",$_SESSION[NIP]);
 if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
-<li><a href="?module=bmnTmasuk">Transfer Masuk</a></li>
+<li><a href="?module=bmnUpload">Upload BAST Hibah (TF)</a></li>
 <?php }
 
 ?>

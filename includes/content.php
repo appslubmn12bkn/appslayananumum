@@ -314,4 +314,10 @@ elseif ($_GET['module'] == 'bmnTambah') {
   }
 }
 
+elseif ($_GET['module'] == 'bmnUpload') {
+  if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
+    include 'media/bmn/bmnUpload.php';
+  }
+}
+
 ?>

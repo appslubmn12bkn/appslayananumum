@@ -12,7 +12,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 } else {
     $cek = user_akses($_GET['module'], $_SESSION['NIP']);
     if ($cek == 1 or $_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
-      //  $aksi = "media/AKSI/bmn.php";
+      $aksi = "media/AKSI/savebmn.php";
         switch ($_GET['act']) {
             default:
                 if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
@@ -47,6 +47,12 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 
                     <a class='btn btn-success btn-md' href=<?php echo "?module=bmnTambah&act=cetak"; ?>>
                     <i class="fa fa-print"></i>&nbsp;&nbsp;Cetak Transaksi Tambah </a>
+
+                    <a class='btn btn-primary btn-md' href=<?php echo "?module=bmnTambah&act=upHarga"; ?>>
+                    <i class="fa fa-tag"></i>&nbsp;&nbsp;Update Harga </a>
+
+                    <a class='btn btn-primary btn-md' href=<?php echo "?module=bmnTambah&act=upBAST"; ?>>
+                    <i class="fa fa-tag"></i>&nbsp;&nbsp;Update Berita Acara </a>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box">
@@ -192,7 +198,7 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
                                       <h4>Ulang Lagi</h4>";
                                     }else{
                                   ?>
-                                <form method='post' class='form-horizontal' action='<?php echo "$aksi?module=bmnTambah&act=bmnBaru"; ?>' enctype='multipart/form-data'>
+                                <form method='post' class='form-horizontal' action='<?php echo "$aksi?module=bmnTambah&act=addBMN"; ?>' enctype='multipart/form-data'>
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label"></label>
                                         <div class="col-sm-2">
@@ -242,21 +248,21 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Tanggal Transaksi</label>
                                         <div class="col-sm-2">
-                                        <input type="text" maxlength="3" class="form-control" name='b_tgltrn' id="b_tgltrn" value='<?php echo date("Y-m-d"); ?>' readonly>
+                                        <input type="text" maxlength="12" class="form-control" name='b_tgltrn' id="b_tgltrn" value='<?php echo date("Y-m-d"); ?>' readonly>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Tanggal Perolehan</label>
                                         <div class="col-sm-2">
-                                        <input type="text" maxlength="3" class="form-control" name='b_tglperlh' id="b_tglperlh" value='<?php echo "$_POST[b_tglperlh]"; ?>'>
+                                        <input type="text" maxlength="12" class="form-control datepicker" name='b_tglperlh' id="b_tglperlh" value='<?php echo "$_POST[b_tglperlh]"; ?>'>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Tanggal Pembukuan</label>
                                         <div class="col-sm-2">
-                                        <input type="text" maxlength="3" class="form-control" name='b_tglbuku' id="b_tglbuku" value='<?php echo "$_POST[b_tglbuku]"; ?>'>
+                                        <input type="text" maxlength="12" class="form-control datepicker" name='b_tglbuku' id="b_tglbuku" value='<?php echo "$_POST[b_tglbuku]"; ?>'>
                                         </div>
                                     </div>
 
@@ -264,13 +270,6 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
                                         <label class="col-sm-2 col-form-label">Kuantitas Trx</label>
                                         <div class="col-sm-1">
                                         <input type="text" maxlength="3" class="form-control" name='b_kuantitas' id="b_kuantitas" value='1' readonly>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Rupiah Aset</label>
-                                        <div class="col-sm-2">
-                                        <input type="text" class="form-control" name='b_rphaset' id="b_rphaset" value='<?php echo "$_POST[b_rphaset]"; ?>'>
                                         </div>
                                     </div>
 
@@ -321,11 +320,14 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
 
                                     <fieldset>
                                     <label for='Kode' class='col-sm-2 control-label'></label>
-                                    <button type=submit value=Simpan Data class='btn btn-primary btn-md'>
-                                    <i class='fa fa-check'></i>&nbsp;&nbsp;&nbsp;Simpan </button></a>
+                                    <button type=submit Data class='btn btn-primary btn-md'>
+                                    <i class='fa fa-check'></i>&nbsp;&nbsp;&nbsp;Simpan </button>
 
-                                    <button type=reset value=Simpan Data class='btn btn-danger btn-md'>
-                                    <i class='fa fa-times'></i>&nbsp;&nbsp;&nbsp; Clear </button></a>
+                                    <button type=reset class='btn btn-dark btn-md'>
+                                    <i class='fa fa-times'></i>&nbsp;&nbsp;&nbsp; Clear </button>
+
+                                    <a class='btn btn-danger btn-md' href=<?php echo "?module=bmnTambah"; ?>>
+                                    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali </a>
                                     </fieldset>
 
                                 </form>
@@ -340,7 +342,265 @@ $tampil = mysqli_query($koneksi, "SELECT * FROM b_sensus
 }else{echo "Anda tidak berhak mengakses halaman ini.";}
 break;
 
-                ?>
+case "upHarga":
+if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
+?>
+<!-- Page Content -->
+                <section class="page-heading fade-in-up">
+                    <h4 class="page-title">
+                        Transaksi Aset / Barang Milik Negara<br>
+                        <span class="badge badge-primary badge-pill m-r-5 m-b-5">Update Harga BMN</span>
+                      </h4>
+                </section>
+                <section class='content fade-in-up'>
+                    <div class='row'>
+                        <div class='col-md-12'>
+                            <div class='box'>
+                            <div class='ibox'>
+                                <div class='ibox-head'>
+                                    <div class='ibox-title'>TA : <?php echo "$rs[s_thnang]"; ?></div>
+                                </div>
+                                <div class='ibox-body'> 
+                                <form method="POST" action="">
+                                   <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Pencarian Kodefikasi</label>
+                                        <div class="col-sm-5">
+                                            <div class="form-group">
+                                                <select class="form-control s2" name='kd_brg'>
+                                                  <option value='BLANK'>PILIH</option>
+                                                  <?php
+                                                    $dataSql = "SELECT a.kd_brg, a.ur_sskel, a.satuan
+                                                                FROM  b_nmbmn a 
+                                                                ORDER BY kd_brg ASC";
+                                                    $dataQry = mysqli_query($koneksi, $dataSql) or die ("Gagal Query".mysql_error());
+                                                    while ($dataRow = mysqli_fetch_array($dataQry)) {
+                                                    if ($dataRow['kd_brg']==$_POST['kd_brg']) {
+                                                      $cek = " selected";
+                                                    } else { $cek=""; }
+                                                    echo "
+                                                  <option value='$dataRow[kd_brg]' $cek>$dataRow[kd_brg]  -  $dataRow[ur_sskel]</option>";
+                                                    }
+                                                    $sqlData ="";
+                                                    ?>
+                                                  </select>
+                                            </div>
+                                        <button type="submit" class='btn btn-danger btn-sm'><i class="fa fa-search"></i> Tampilkan</button>
+                                        </div>
+                                    </div>                                        
+                                </form>
+                                  <?php
+                                    $a = mysqli_query($koneksi,
+                                    " SELECT a.kd_brg, a.ur_sskel, a.satuan
+                                      FROM   b_nmbmn a
+                                      WHERE  a.kd_brg='$_POST[kd_brg]'");
+                                    $r = mysqli_fetch_array($a);
+                                    $cekdata = mysqli_num_rows($a);
+                                    if(isset($_POST['kd_brg']) && $cekdata==0 ){
+                                      echo "
+                                      <h4>Ulang Lagi</h4>";
+                                    }else{
+                                  ?>
+                                <form method='post' class='form-horizontal' action='<?php echo "$aksi?module=bmnTambah&act=updateHarga"; ?>' enctype='multipart/form-data'>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label"></label>
+                                        <div class="col-sm-2">
+                                        <input type="text" class="form-control" name='kd_brg' id="kd_brg" value='<?php echo "$r[kd_brg]"; ?>' readonly>
+                                        </div>
+
+                                        <div class="col-sm-5">
+                                        <input type="text" class="form-control" name='nm_brg' id="nm_brg" value='<?php echo "$r[ur_sskel]"; ?>' readonly>
+                                        </div>
+
+                                        <div class="col-sm-2">
+                                        <input type="text" class="form-control" name='satuan' id="satuan" value='<?php echo "$r[satuan]"; ?>' readonly>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Jumlah BMN</label>
+                                        <div class="col-sm-1">
+                                        <input type="text" maxlength="3" class="form-control" name='qty' id="qty" value='<?php echo "$_POST[qty]"; ?>' onkeyup=sum2();>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">No Aset</label>
+                                        <div class="col-sm-1">
+                                        <input type="text" class="form-control" maxlength="3" name='nupAW' id="nupAW" value='<?php echo "$_POST[nupAW]"; ?>' onkeyup=sum2();>
+                                        <small>Awal</small>
+                                        </div>
+
+                                        <div class="col-sm-1">
+                                        <input type="text" class="form-control" maxlength="3" name='nupAK' id="nupAK" value='<?php echo "$_POST[nupAK]"; ?>' readonly>
+                                        <small>Akhir</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Rupiah Aset</label>
+                                        <div class="col-sm-2">
+                                        <input type="text" class="form-control" name='b_rphaset' id="b_rphaset" value='<?php echo "$_POST[b_rphaset]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <fieldset>
+                                    <label for='Kode' class='col-sm-2 control-label'></label>
+                                    <button type=submit Data class='btn btn-primary btn-md'>
+                                    <i class='fa fa-check'></i>&nbsp;&nbsp;&nbsp;Simpan </button>
+
+                                    <button type=reset class='btn btn-dark btn-md'>
+                                    <i class='fa fa-times'></i>&nbsp;&nbsp;&nbsp; Clear </button>
+
+                                    <a class='btn btn-danger btn-md' href=<?php echo "?module=bmnTambah"; ?>>
+                                    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali </a>
+                                    </fieldset>
+
+                                </form>
+                                <?php } ?>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </section>
+<?php
+}else{echo "Anda tidak berhak mengakses halaman ini.";}
+break;
+
+case "upBAST":
+if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
+?>
+<!-- Page Content -->
+                <section class="page-heading fade-in-up">
+                    <h4 class="page-title">
+                        Transaksi Aset / Barang Milik Negara<br>
+                        <span class="badge badge-info badge-pill m-r-5 m-b-5">Update Berita Acara Serah Terima</span>
+                      </h4>
+                </section>
+                <section class='content fade-in-up'>
+                    <div class='row'>
+                        <div class='col-md-12'>
+                            <div class='box'>
+                            <div class='ibox'>
+                                <div class='ibox-head'>
+                                    <div class='ibox-title'>TA : <?php echo "$rs[s_thnang]"; ?></div>
+                                </div>
+                                <div class='ibox-body'> 
+                                <form method="POST" action="">
+                                   <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Pencarian Kodefikasi</label>
+                                        <div class="col-sm-5">
+                                            <div class="form-group">
+                                                <select class="form-control s2" name='kd_brg'>
+                                                  <option value='BLANK'>PILIH</option>
+                                                  <?php
+                                                    $dataSql = "SELECT a.kd_brg, a.ur_sskel, a.satuan
+                                                                FROM  b_nmbmn a 
+                                                                ORDER BY kd_brg ASC";
+                                                    $dataQry = mysqli_query($koneksi, $dataSql) or die ("Gagal Query".mysql_error());
+                                                    while ($dataRow = mysqli_fetch_array($dataQry)) {
+                                                    if ($dataRow['kd_brg']==$_POST['kd_brg']) {
+                                                      $cek = " selected";
+                                                    } else { $cek=""; }
+                                                    echo "
+                                                  <option value='$dataRow[kd_brg]' $cek>$dataRow[kd_brg]  -  $dataRow[ur_sskel]</option>";
+                                                    }
+                                                    $sqlData ="";
+                                                    ?>
+                                                  </select>
+                                            </div>
+                                        <button type="submit" class='btn btn-danger btn-sm'><i class="fa fa-search"></i> Tampilkan</button>
+                                        </div>
+                                    </div>                                        
+                                </form>
+                                  <?php
+                                    $a = mysqli_query($koneksi,
+                                    " SELECT a.kd_brg, a.ur_sskel, a.satuan
+                                      FROM   b_nmbmn a
+                                      WHERE  a.kd_brg='$_POST[kd_brg]'");
+                                    $r = mysqli_fetch_array($a);
+                                    $cekdata = mysqli_num_rows($a);
+                                    if(isset($_POST['kd_brg']) && $cekdata==0 ){
+                                      echo "
+                                      <h4>Ulang Lagi</h4>";
+                                    }else{
+                                  ?>
+                                <form method='post' class='form-horizontal' action='<?php echo "$aksi?module=bmnTambah&act=updateBAST"; ?>' enctype='multipart/form-data'>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label"></label>
+                                        <div class="col-sm-2">
+                                        <input type="text" class="form-control" name='kd_brg' id="kd_brg" value='<?php echo "$r[kd_brg]"; ?>' readonly>
+                                        </div>
+
+                                        <div class="col-sm-5">
+                                        <input type="text" class="form-control" name='nm_brg' id="nm_brg" value='<?php echo "$r[ur_sskel]"; ?>' readonly>
+                                        </div>
+
+                                        <div class="col-sm-2">
+                                        <input type="text" class="form-control" name='satuan' id="satuan" value='<?php echo "$r[satuan]"; ?>' readonly>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Jumlah BMN</label>
+                                        <div class="col-sm-1">
+                                        <input type="text" maxlength="3" class="form-control" name='qty' id="qty" value='<?php echo "$_POST[qty]"; ?>' onkeyup=sum2();>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">No Aset</label>
+                                        <div class="col-sm-1">
+                                        <input type="text" class="form-control" maxlength="3" name='nupAW' id="nupAW" value='<?php echo "$_POST[nupAW]"; ?>' onkeyup=sum2();>
+                                        <small>Awal</small>
+                                        </div>
+
+                                        <div class="col-sm-1">
+                                        <input type="text" class="form-control" maxlength="3" name='nupAK' id="nupAK" value='<?php echo "$_POST[nupAK]"; ?>' readonly>
+                                        <small>Akhir</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">No BAST</label>
+                                        <div class="col-sm-10">
+                                        <input type="text" class="form-control" name='b_bast' id="b_bast" value='<?php echo "$_POST[b_bast]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Tanggal BAST</label>
+                                        <div class="col-sm-2">
+                                        <input type="text" maxlength="12" class="form-control datepicker" name='b_tglbast' id="b_tglbast" value='<?php echo "$_POST[b_tglbast]"; ?>'>
+                                        </div>
+                                    </div>
+
+                                    <fieldset>
+                                    <label for='Kode' class='col-sm-2 control-label'></label>
+                                    <button type=submit Data class='btn btn-primary btn-md'>
+                                    <i class='fa fa-check'></i>&nbsp;&nbsp;&nbsp;Simpan </button>
+
+                                    <button type=reset class='btn btn-dark btn-md'>
+                                    <i class='fa fa-times'></i>&nbsp;&nbsp;&nbsp; Clear </button>
+
+                                    <a class='btn btn-danger btn-md' href=<?php echo "?module=bmnTambah"; ?>>
+                                    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali </a>
+                                    </fieldset>
+
+                                </form>
+                                <?php } ?>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </section>
+<?php
+}else{echo "Anda tidak berhak mengakses halaman ini.";}
+break;
+?>
 <?php
         }
     }

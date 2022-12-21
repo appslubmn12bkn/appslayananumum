@@ -98,7 +98,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                     Tanggal Pengajuan</label>
                                     <div class="col-sm-2">
                                     <input type="text" class="form-control datepicker" name='tglmohon' value='<?php echo $_POST[tglmohon]; ?>'>
-                                    </div>
+                                    </div> 
                                 </div>
                                 <div class="form-group row">
                                     <label for="fname" class="col-sm-3 text-right control-label col-form-label">
