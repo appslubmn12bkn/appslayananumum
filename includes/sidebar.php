@@ -41,10 +41,22 @@
 
                     <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
                     <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-plane"></i>
+                            <span class="nav-label">Barang Milik Negara</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <?php include 'mn_side/mn_bmn.php';?>
+                        </ul>
+                    </li>
+                    <?php } ?>
+
+<!--
+
+                    <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
+                    <li>
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-address-card-o"></i>
                             <span class="nav-label">Ekspedisi Surat</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
-                            <?php include 'mn_side/mn_ekpedisisurat.php';?>
+                           <?php //include 'mn_side/mn_ekpedisisurat.php';?>
                         </ul>
                     </li>
                     <?php } ?>
@@ -54,27 +66,19 @@
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-opencart"></i>
                             <span class="nav-label">Persediaan</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
-                            <?php include 'mn_side/mn_persediaan.php';?>
+                            <?php //include 'mn_side/mn_persediaan.php';?>
                         </ul>
                     </li>
                     <?php } ?>
 
-                    <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
-                    <li>
-                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-plane"></i>
-                            <span class="nav-label">Barang Milik Negara</span><i class="fa fa-angle-left arrow"></i></a>
-                        <ul class="nav-2-level collapse">
-                            <?php include 'mn_side/mn_bmn.php';?>
-                        </ul>
-                    </li>
-                    <?php } ?>
+
 
                     <?php if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
                     <li>
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-automobile"></i>
                             <span class="nav-label">Kendaraan Dinas</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
-                            <?php include 'mn_side/mn_mobnas.php';?>
+                            <?php //include 'mn_side/mn_mobnas.php';?>
                         </ul>
                     </li>
                     <?php } ?>
@@ -84,12 +88,12 @@
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-recycle"></i>
                             <span class="nav-label">Pemeliharaan</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
-                            <?php  include  'mn_side/mn_pelihara.php';?>
+                            <?php  //include  'mn_side/mn_pelihara.php';?>
                         </ul>
                     </li>
                     <?php } ?>
 
-                    <!-- UNDER CONSTRUCTION -->
+                     
 
                     <?php if($cek==1 OR $_SESSION[LEVEL]=='admin'){ ?>
                     <li>
@@ -111,7 +115,7 @@
                         </ul>
                     </li>
                     <?php } ?>
-
+UNDER CONSTRUCTION -->
                 </ul>
             </div>
         </nav>

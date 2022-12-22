@@ -36,8 +36,8 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                     ?>
                     <section class="page-heading fade-in-up">
                       <h4 class="page-title">
-                        DAFTAR BARANG MILIK NEGARA<br>
-                        <h6>Penambahan Aset / BMN Kantor </h6>
+                        LAYANAN UMUM BARANG MILIK NEGARA<br>
+                        <h6>Distribusi BMN </h6>
                       </h4>
                     </section>
 

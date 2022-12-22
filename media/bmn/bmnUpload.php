@@ -37,7 +37,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                     <section class="page-heading fade-in-up">
                       <h4 class="page-title">
                         DAFTAR BARANG MILIK NEGARA<br>
-                        <span class="badge badge-warning badge-pill m-r-5 m-b-5">Tambah BMN Baru</span>
+                        <span class="badge badge-warning badge-pill m-r-5 m-b-5">Upload BAST (Pengadaan / TF)</span>
                       </h4>
                     </section>
 
@@ -60,11 +60,11 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                         <tr>
                                                             <th bgcolor='#88c799'> NO </th>
                                                             <th bgcolor='#88c799'> KODE</th>
-                                                            <th bgcolor='#88c799'> NAMA BARANG</th>
+                                                            <th bgcolor='#88c799'> URAIAN</th>
                                                             <th bgcolor='#88c799'> NO AWAL</th>
                                                             <th bgcolor='#88c799'> NO AKHIR </th>
                                                             <th bgcolor='#88c799'> TGL PEROLEH </th>
-                                                            <th bgcolor='#88c799'> JUMLAH </th>
+                                                            <th bgcolor='#88c799'> QTY </th>
                                                             <th bgcolor='#88c799'> BAST </th>
                                                             <th bgcolor='#88c799'> TGL BAST </th>
                                                             <th bgcolor='#88c799' width='25px'> MEREK_TYPE</th>
@@ -100,10 +100,11 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                                 <td><?php echo indotgl($r[b_tglperlh]); ?></td>
                                                                 <td><?php echo "$r[b_kuantitas]"; ?></td>
                                                                 <td><?php echo "$r[b_bast]"; ?></td>
-                                                                <td><?php echo "$r[b_tglbast]"; ?></td>
+                                                                <td><?php echo indotgl($r[b_tglbast]); ?></td>
                                                                 <td><?php echo "$r[b_merektype]"; ?></td>
-                                                                <td><?php echo "$r[b_bukti]"; ?>
-                                                                    
+                                                                <td>
+                                                                <a href='<?php echo"?module=bmnUpload&act=bukti&kd_brg=$r[b_kdbrg]&no_awal=$r[b_noaset_awal]&no_akhir=$r[b_noaset_akhir]";?>'>
+                                                                <?php echo "$r[b_bukti]"; ?></a> 
                                                                 </td>
                                                             </tr>
                                                             </tfoot>
@@ -131,7 +132,7 @@ if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
                 <section class="page-heading fade-in-up">
                     <h4 class="page-title">
                         Transaksi Aset / Barang Milik Negara<br>
-                        <span class="badge badge-success badge-pill m-r-5 m-b-5">Tambah BMN Baru</span>
+                        <span class="badge badge-success badge-pill m-r-5 m-b-5">Upload BAST</span>
                       </h4>
                 </section>
                 <section class='content fade-in-up'>
@@ -287,6 +288,55 @@ if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
 
                                 </form>
                                 <?php } ?>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </section>
+<?php
+}else{echo "Anda tidak berhak mengakses halaman ini.";}
+break;
+
+case "bukti":
+if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
+$qry    = "SELECT b_kdbrg, b_noaset_awal, b_noaset_akhir, b_bukti 
+           FROM b_uploadbast 
+           WHERE b_kdbrg = '$_GET[kd_brg]' 
+           AND b_noaset_awal = '$_GET[no_awal]' 
+           AND b_noaset_akhir = '$_GET[no_akhir]'
+           ORDER BY b_kdbrg ASC";
+$bukti  = mysqli_query($koneksi,$qry);
+$rsb    = mysqli_fetch_array($bukti);
+?>
+<!-- Page Content -->
+                <section class="page-heading fade-in-up">
+                    <h4 class="page-title">
+                        Bukti Pengiriman / BAST<br>
+                        <span class="badge badge-dark badge-pill m-r-5 m-b-5">Bukti Pengiriman / BAST Kirim</span>
+                      </h4>
+                </section>
+                <section class='content fade-in-up'>
+                  <a href=''>
+                  <button type="button" class="btn btn-dark btn-sm">
+                    <i class="fa fa-refresh"></i>&nbsp;&nbsp;Muat Ulang
+                  </button></a>
+
+                  <a href='<?php echo"?module=bmnUpload";?>'>
+                  <button type="button" class="btn btn-danger btn-sm">
+                  <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali 
+                  </button>
+                  </a>
+                        <div class='row'>
+                            <div class='col-md-12'>
+                                <div class='box'>
+                                    <div class='ibox'>
+                                        <div class='ibox-head'>
+                                            <div class='ibox-title'>TA : <?php echo "$rs[s_thnang]"; ?></div>
+                                        </div>
+                                        <div class='ibox-body'> 
+                                        <embed src="_bast/<?php echo $rsb[b_bukti]; ?>" type='application/pdf' width='100%' height='700px'/></embed>    
+             
                                         </div>
                                     </div>
                                 </div>

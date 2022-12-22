@@ -20,7 +20,17 @@ if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
 
 $cek=umenu_akses("?module=bmnUpload",$_SESSION[NIP]);
 if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
-<li><a href="?module=bmnUpload">Upload BAST Hibah (TF)</a></li>
+<li><a href="?module=bmnUpload">Upload BAST (Beli/TF)</a></li>
+<?php }
+
+$cek=umenu_akses("?module=bmnRegist",$_SESSION[NIP]);
+if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
+<li><a href="?module=bmnRegist">Label Registrasi BMN</a></li>
+<?php }
+
+$cek=umenu_akses("?module=bmnDist",$_SESSION[NIP]);
+if($cek==1 OR $_SESSION[LEVEL]=='admin' OR $_SESSION[LEVEL]=='user'){ ?>
+<li><a href="?module=bmnDist">Distribusi Ke Unit</a></li>
 <?php }
 
 ?>

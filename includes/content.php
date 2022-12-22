@@ -320,4 +320,15 @@ elseif ($_GET['module'] == 'bmnUpload') {
   }
 }
 
+elseif ($_GET['module'] == 'bmnDist') {
+  if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
+    include 'media/bmn/bmnDist.php';
+  }
+}
+
+elseif ($_GET['module'] == 'bmnRegist') {
+  if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
+    include 'media/bmn/bmnRegist.php';
+  }
+}
 ?>

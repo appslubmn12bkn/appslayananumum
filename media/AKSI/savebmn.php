@@ -62,6 +62,24 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 									b_keterangan	= '$_POST[b_keterangan]',
 									b_bmnasalperlh	= '$_POST[b_bmnasalperlh]'");
 
+				mysqli_query($koneksi, "INSERT INTO b_bmnsatker
+								SET	kd_brg		= '$_POST[kd_brg]',
+									no_aset		= '$i',
+									thn_ang     = '$_POST[thn_ang]',
+									periode     = '$_POST[periode]',
+									kd_lokasi	= '$_POST[kdsatker]',
+									tgl_buku	= '$_POST[b_tglbuku]',
+									tgl_perlh	= '$_POST[b_tglperlh]',
+									kondisi		= '$_POST[b_kondisi]',
+									tercatat	= '$_POST[b_tercatat]',
+									kuantitas	= '$_POST[b_kuantitas]',
+									rph_aset	= '0',
+									rph_sat		= '0',
+									merk_type	= '$_POST[b_merektype]',
+									jns_trn		= '$_POST[jns_trn]',
+									keterangan  = '$_POST[b_keterangan]',
+									asal_perlh	= '$_POST[b_bmnasalperlh]'");
+
 			?>
 				<script type="text/javascript">
 					setTimeout(function() {
@@ -91,6 +109,13 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 								SET	b_kdbrg			= '$_POST[kd_brg]',
 									b_noaset		= '$i',
 									b_rphaset		= '$_POST[b_rphaset]'
+									WHERE b_kdbrg = '$_POST[kd_brg]' AND b_noaset = '$i'");
+
+			mysqli_query($koneksi, "UPDATE b_bmnsatker
+								SET	b_kdbrg		= '$_POST[kd_brg]',
+									b_noaset	= '$i',
+									rph_aset	= '$_POST[b_rphaset]',
+									rph_sat		= '$_POST[b_rphsat]'
 									WHERE b_kdbrg = '$_POST[kd_brg]' AND b_noaset = '$i'");
 
 			?>
