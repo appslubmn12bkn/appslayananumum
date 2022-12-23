@@ -44,6 +44,9 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                     <section class="content fade-in-up">
                     <a class='btn btn-primary btn-md' href=<?php echo "?module=bmnRegist&act=label"; ?>>
                     <i class="fa fa-print"></i>&nbsp;&nbsp;Cetak Label Registrasi / Barcode </a>
+
+                    <a class='btn btn-success btn-md' href=<?php echo "?module=bmnRegist&act=reLabel"; ?>>
+                    <i class="fa fa-print"></i>&nbsp;&nbsp;Cetak Label Registrasi / Barcode Ulang</a>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box">
@@ -55,36 +58,67 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                             </div>
                                             <div class="ibox-body">
                                                 <div class="row">
-                                                <table id="table_3" class="table table-bordered table-striped responsive">
+                                                <table id="table_5" class="table table-bordered table-striped responsive">
                                                     <thead>
                                                         <tr>
                                                             <th bgcolor='#88c7f2'> NO </th>
                                                             <th bgcolor='#88c7f2'> KODEFIKASI</th>
                                                             <th bgcolor='#88c7f2'> URAIAN</th>
                                                             <th bgcolor='#88c7f2'> NUP</th>
+                                                            <th bgcolor='#88c7f2'> PEROLEHAN</th>
                                                             <th bgcolor='#88c7f2'> MEREK_TYPE</th>
                                                             <th bgcolor='#88c7f2'> STATUS</th>
 
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-
+                                                    <?php
+                                                        $qry  = "SELECT a.kd_brg, a.no_aset, a.tgl_perlh,
+                                                                        a.merk_type, a.status_label,
+                                                                        b.kd_brg, b.ur_sskel, b.satuan,
+                                                                        c.b_kdbrg, c.b_noaset, c.b_merektype,
+                                                                        d.status_label, d.uraian_status
+                                                                  FROM b_bmnsatker a
+                                                                  LEFT JOIN b_nmbmn b ON b.kd_brg = a.kd_brg
+                                                                  LEFT JOIN b_bmnbaru c ON c.b_kdbrg = a.kd_brg AND c.b_noaset=a.no_aset 
+                                                                  LEFT JOIN s_statuslbl d ON d.status_label=a.status_label
+                                                                  WHERE (a.status_label IN ('1','2'))
+                                                                  ORDER BY a.kd_brg AND a.no_aset ASC";
+                                                        $lbl    = mysqli_query($koneksi,$qry);
+                                                        $no = 0;
+                                                        while ($r= mysqli_fetch_array($lbl)) {
+                                                            $no++;
+                                                        ?>
                                                             <tr>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
+                                                                <td><?php echo "$no"; ?></td>
+                                                                <td><?php echo "$r[b_kdbrg]"; ?></td>
+                                                                <td><?php echo "$r[ur_sskel]"; ?></td>
+                                                                <td><?php echo "$r[b_noaset]"; ?></td>
+                                                                <td><?php echo indotgl($r[tgl_perlh]); ?></td>
+                                                                <td><?php echo "$r[b_merektype]"; ?></td>
+                                                                <?php if($r['status_label']=='1') {?>
+                                                                <td>
+                                                                <div class="badge badge-success badge-pill" align='center'>
+                                                                <strong><?php echo "$r[uraian_status]"; ?></strong> 
+                                                                </div>
+                                                                </td>
+                                                                <?php }else{?>
+                                                                <td>
+                                                                <div class="badge badge-info badge-pill" align='center'>
+                                                                <strong><?php echo "$r[uraian_status]"; ?></strong> 
+                                                                </div>
+                                                                </td>
+                                                                <?php }?>
                                                             </tr>
                                                             </tfoot>
+                                                        <?php } ?>
                                                 </table> 
-                                                </div>
+                                                </div> 
                                             </div>
-                                     </div>
-                                </div>
+                                        </div> 
+                                    </div>
+                                </div> 
                             </div>
-                        </div>
                     </section>
 
 
@@ -111,8 +145,8 @@ if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
 <!-- Page Content -->
                 <section class="page-heading fade-in-up">
                     <h4 class="page-title">
-                        Transaksi Aset / Barang Milik Negara<br>
-                        <span class="badge badge-success badge-pill m-r-5 m-b-5">Tambah BMN Baru</span>
+                        Label Registrasi Barang Milik Negara<br>
+                        <span class="badge badge-danger badge-pill m-r-5 m-b-5">Label Registrasi</span>
                       </h4>
                 </section>
                 <section class='content fade-in-up'>
@@ -121,7 +155,7 @@ if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
                             <div class='box'>
                             <div class='ibox'>
                                 <div class='ibox-head'>
-                                    <div class='ibox-title'>TA : <?php echo "$rs[s_thnang]"; ?> <?php echo "$log[LOKINS]"; ?></div>
+                                    <div class='ibox-title'>TA : <?php echo "$rs[s_thnang]"; ?></div>
                                 </div>
                                 <div class='ibox-body'> 
                                 <form method="POST" action="">
@@ -147,69 +181,8 @@ if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
                                                     ?>
                                                   </select>
                                             </div>
-                                        <button type="submit" class='btn btn-danger btn-sm'><i class="fa fa-search"></i> Tampilkan</button>
                                         </div>
                                     </div>                                        
-                                </form>
-                                  <?php
-                                    $a = mysqli_query($koneksi,
-                                    " SELECT a.kd_brg, a.ur_sskel, a.satuan
-                                      FROM   b_nmbmn a
-                                      WHERE  a.kd_brg='$_POST[kd_brg]'");
-                                    $r = mysqli_fetch_array($a);
-                                    $cekdata = mysqli_num_rows($a);
-                                    if(isset($_POST['kd_brg']) && $cekdata==0 ){
-                                      echo "
-                                      <h4>Ulang Lagi</h4>";
-                                    }else{
-                                  ?>
-                                <form method='post' class='form-horizontal' action='<?php echo "$aksi?module=bmnTambah&act=addBMN"; ?>' enctype='multipart/form-data'>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label"></label>
-                                        <div class="col-sm-2">
-                                        <input type="text" class="form-control" name='kd_brg' id="kd_brg" value='<?php echo "$r[kd_brg]"; ?>' readonly>
-                                        </div>
-
-                                        <div class="col-sm-5">
-                                        <input type="text" class="form-control" name='nm_brg' id="nm_brg" value='<?php echo "$r[ur_sskel]"; ?>' readonly>
-                                        </div>
-
-                                        <div class="col-sm-2">
-                                        <input type="text" class="form-control" name='satuan' id="satuan" value='<?php echo "$r[satuan]"; ?>' readonly>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Tahun Anggaran</label>
-                                        <div class="col-sm-1">
-                                        <input type="text" class="form-control" name='thn_ang' value='<?php echo "$rs[s_thnang]"; ?>' readonly>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Periode Anggaran</label>
-                                        <div class="col-sm-1">
-                                        <input type="text" class="form-control" name='periode' value='<?php echo date(m); ?>' readonly>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Kode Satuan Kerja</label>
-                                        <div class="col-sm-2">
-                                        <input type="text" class="form-control" name='kdsatker' value='<?php echo "$log[kdukpb]"; ?>' readonly>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Jenis Transaksi (Trx)</label>
-                                        <div class="col-sm-4">
-                                            <select class="form-control s2" name='jns_trn'>
-                                                <option value='BLANK'>PILIH</option>
-                                                <option value='101'>101 - Pembelian [Pengadaan Sendiri]</option>
-                                                <option value='102'>102 - Transfer Masuk [Pengadaan Pusat]</option>
-                                            </select>
-                                        </div>
-                                    </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Jumlah BMN</label>
@@ -231,93 +204,106 @@ if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Tanggal Transaksi</label>
-                                        <div class="col-sm-2">
-                                        <input type="text" maxlength="12" class="form-control" name='b_tgltrn' id="b_tgltrn" value='<?php echo date("Y-m-d"); ?>' readonly>
-                                        </div>
+                                    <div class="form-group">
+                                    <label class="col-sm-2 col-form-label"></label>
+                                    <button type="submit" class='btn btn-danger btn-sm'>
+                                    <i class="fa fa-search"></i> Tampilkan</button>
                                     </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Tanggal Perolehan</label>
-                                        <div class="col-sm-2">
-                                        <input type="text" maxlength="12" class="form-control datepicker" name='b_tglperlh' id="b_tglperlh" value='<?php echo "$_POST[b_tglperlh]"; ?>'>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Tanggal Pembukuan</label>
-                                        <div class="col-sm-2">
-                                        <input type="text" maxlength="12" class="form-control datepicker" name='b_tglbuku' id="b_tglbuku" value='<?php echo "$_POST[b_tglbuku]"; ?>'>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Kuantitas Trx</label>
-                                        <div class="col-sm-1">
-                                        <input type="text" maxlength="3" class="form-control" name='b_kuantitas' id="b_kuantitas" value='1' readonly>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Kondisi BMN</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control s2" name='b_kondisi'>
-                                                <option value='BLANK'>PILIH</option>
-                                                <option value='1'>BB - Barang Baik</option>
-                                                <option value='2'>RR - Rusak Ringan</option>
-                                                <option value='3'>RB - Rusak Berat</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">BMN Tercatat</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control s2" name='b_tercatat'>
-                                                <option value='BLANK'>PILIH</option>
-                                                <option value='1'>DBR - Daftar Barang Ruangan</option>
-                                                <option value='2'>DBL - Daftar Barang Lainnya</option>
-                                                <option value='3'>KIB - Kartu Induk Barang</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Asal Perolehan</label>
-                                        <div class="col-sm-10">
-                                        <input type="text" class="form-control" name='b_bmnasalperlh' id="b_bmnasalperlh" value='<?php echo "$_POST[b_bmnasalperlh]"; ?>'>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Merek / Type</label>
-                                        <div class="col-sm-10">
-                                        <input type="text" class="form-control" name='b_merektype' id="b_merektype" value='<?php echo "$_POST[b_merektype]"; ?>'>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Keterangan</label>
-                                        <div class="col-sm-10">
-                                        <input type="text" class="form-control" name='b_keterangan' id="b_keterangan" value='<?php echo "$_POST[b_keterangan]"; ?>'>
-                                        </div>
-                                    </div>
-
-                                    <fieldset>
-                                    <label for='Kode' class='col-sm-2 control-label'></label>
-                                    <button type=submit Data class='btn btn-primary btn-md'>
-                                    <i class='fa fa-check'></i>&nbsp;&nbsp;&nbsp;Simpan </button>
-
-                                    <button type=reset class='btn btn-dark btn-md'>
-                                    <i class='fa fa-times'></i>&nbsp;&nbsp;&nbsp; Clear </button>
-
-                                    <a class='btn btn-danger btn-md' href=<?php echo "?module=bmnTambah"; ?>>
-                                    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali </a>
-                                    </fieldset>
-
                                 </form>
-                                <?php } ?>                                        
+
+                                <?php
+                                        $a = mysqli_query(
+                                            $koneksi,
+                                            "   SELECT  a.b_kdbrg, a.b_noaset, 
+                                                        b.kd_brg, b.no_aset, b.status_label,
+                                                        c.kd_brg, c.ur_sskel
+                                                FROM   b_bmnbaru a
+                                                LEFT JOIN b_bmnsatker b ON b.kd_brg = a.b_kdbrg AND b.no_aset = a.b_noaset
+                                                INNER JOIN b_nmbmn c ON c.kd_brg = a.b_kdbrg
+                                                WHERE  a.b_kdbrg ='$_POST[kd_brg]'
+                                                AND a.b_noaset BETWEEN '$_POST[nupAW]' AND '$_POST[nupAK]'
+                                                ORDER BY a.b_kdbrg AND a.b_noaset ASC"
+                                        );
+                                        $data = mysqli_fetch_array($a);
+                                        $cekdata = mysqli_num_rows($a);
+                                        if (isset($_POST['kd_brg']) and isset($_POST['nupAW']) and isset($_POST['nupAK']) && $cekdata == 0) {
+                                            echo "
+                                            <h4><font color='red'>Pemberitahuan!</font></h4>
+                                            Data Tidak Ditemukan, Cek BMN!";
+                                        } else {
+                                        ?>
+                                        <table id='simpletable' class='table table-bordered table-striped'>
+                                                <thead>
+                                                    <tr>
+                                                        <th bgcolor='#0b3f5f' style='width: 7px'>
+                                                            <font color='#fff'>#</font>
+                                                        </th>
+                                                        <th bgcolor='#0b3f5f'>
+                                                            <font color='#fff'>KODE</font>
+                                                        </th>
+                                                        <th bgcolor='#0b3f5f'>
+                                                            <font color='#fff'>URAIAN</font>
+                                                        </th>
+                                                        <th bgcolor='#0b3f5f'>
+                                                            <font color='#fff'>NO ASET</font>
+                                                        </th>
+                                                        <th bgcolor='#0b3f5f'>
+                                                            <font color='#fff'>MEREK</font>
+                                                        </th>
+                                                        <th bgcolor='#0b3f5f'>
+                                                            <font color='#fff'>TRN</font>
+                                                        </th>
+                                                        <th bgcolor='#0b3f5f'>
+                                                            <font color='#fff'>LOKASI</font>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $cek = mysqli_query(
+                                                        $koneksi,
+                                                        "SELECT a.b_kdbrg, a.b_noaset, 
+                                                                c.kd_brg, c.ur_sskel,
+                                                                d.merk_type, d.kondisi, 
+                                                                d.status_label, d.kd_lokasi,
+                                                                d.kd_brg, d.no_aset, d.jns_trn
+                                                        FROM b_bmnbaru a
+                                                        LEFT JOIN b_nmbmn c ON c.kd_brg=a.b_kdbrg
+                                                        LEFT JOIN b_bmnsatker d ON d.kd_brg=a.b_kdbrg AND d.no_aset=a.b_noaset
+                                                        WHERE a.b_kdbrg ='$_POST[kd_brg]'
+                                                        AND d.status_label = '1'
+                                                        AND  a.b_noaset BETWEEN '$_POST[nupAW]' AND '$_POST[nupAK]'
+                                                        AND (d.jns_trn IN (100, 101, 102, 103, 105, 113, 107, 112))
+                                                        ORDER BY a.b_noaset ASC"
+                                                    );
+
+                                                    $numRows = mysqli_num_rows($cek);
+                                                    $no = 0;
+                                                    while ($r = mysqli_fetch_array($cek)) {
+                                                        $no++;
+                                                    ?>
+                                                        <tr>
+                                                            <td><?php echo "$no"; ?></td>
+                                                            <td><?php echo "$r[kd_brg]"; ?></td>
+                                                            <td><?php echo "$r[ur_sskel]"; ?></b></td>
+                                                            <td><?php echo "$r[b_noaset]"; ?></td>
+                                                            <td><?php echo "$r[merk_type]"; ?></td>
+                                                            <td><?php echo "$r[jns_trn]"; ?></td>
+                                                            <td><?php echo "$r[kd_lokasi]"; ?></td>
+                                                        </tr>
+                                                        </tfoot>
+                                                    <?php }
+                                                    if ($cekdata == 0) {
+                                                    ?>
+
+                                                    <?php } else { ?>
+                                                        <form method=POST action='<?php echo "media/bmn/cetaklabel.php?kd_brg=$_POST[kd_brg]&nupAW=$_POST[nupAW]&nupAK=$_POST[nupAK]"; ?>' target='_blank'>
+                                                            <p><button type=submit class='btn btn-dark btn-md'><i class='fa fa-print'></i>
+                                                                    &nbsp;&nbsp;&nbsp;Tampilkan Label Barcode</button></a></p>
+                                                        </form>
+                                                    <?php } ?>
+                                            </table>
+                                        <?php } ?>                                   
                                         </div>
                                     </div>
                                 </div>
