@@ -168,8 +168,47 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 		$label = mysqli_query($koneksi,$qry);
 		?>
 
-		<table width="215" height="60" border='1'>
+		<table width="350" height="60" border='1'>
 			<?php while ($barcode = mysqli_fetch_array($label)) {?>
+			<tr>
+					<td>
+						<font face='arial' size='2'>
+							&nbsp;<strong><?php echo "$barcode[pebin]"; ?>.<?php echo "$barcode[pbi]"; ?>.<?php echo "$barcode[wilayah]"; ?>.<?php echo "$barcode[ukpb]"; ?>.<?php echo "$barcode[upkpb]"; ?>.<?php echo "$barcode[jk]"; ?> <?php echo "$barcode[thn_ang]"; ?></strong>
+						</font>
+					</td>
+			</tr>
+			
+			<tr>
+					<td height="100">
+						<font face='arial' size='1' >
+							&nbsp;<strong><?php echo "$barcode[pebin]"; ?>.<?php echo "$barcode[pbi]"; ?>.<?php echo "$barcode[wilayah]"; ?>.<?php echo "$barcode[ukpb]"; ?>.<?php echo "$barcode[upkpb]"; ?>.<?php echo "$barcode[jk]"; ?> <?php echo "$barcode[thn_ang]"; ?></strong>
+						<br>
+						
+							&nbsp;<strong><?php echo "$barcode[nmukpb]"; ?></strong>
+						</font>
+					</td>
+			</tr>
+
+			<tr>
+					<td>
+						<font face='arial' size='2'>
+							&nbsp;<strong><?php echo "$barcode[nmukpb]"; ?></strong>
+						</font>
+					</td>
+			</tr>
+
+		</table>
+<br><br>
+
+
+
+
+
+
+
+
+		<table width="215" height="60" border='1'>
+			
 				<tr>
 					<td colspan='2'>
 						<font face='arial' size='1'>
