@@ -168,7 +168,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 		$label = mysqli_query($koneksi,$qry);
 		?>
 
-		<table width="350" height="60" border='1'>
+		<table width="350" height="60" border='0'>
 			<?php while ($barcode = mysqli_fetch_array($label)) {?>
 			<tr>
 					<td>
