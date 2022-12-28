@@ -40,123 +40,12 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 
 	<head>
 		<style type="text/css">
-			h1 {
-				font-family: Bookman Old Style;
-				font-size: 11px;
-				font-style: italic;
-				font-variant: normal;
-				font-weight: 400;
-				line-height: 15.6px;
-			}
-
-			h2 {
-				font-family: Bookman Old Style;
-				font-size: 11px;
-				font-style: italic;
-				font-variant: normal;
-				font-weight: 400;
-				line-height: 15.6px;
-			}
 
 			h3 {
-				font-family: Arial;
-				font-size: 14px;
-				font-style: normal;
-				font-variant: normal;
 				text-align: right;
-				font-weight: bold;
-				line-height: 10.4px;
 			}
 
-			h4 {
-				font-family: Arial;
-				font-size: 12px;
-				text-align: left;
-				font-variant: normal;
-				font-weight: 400;
-				line-height: 15.6px;
-			}
 
-			h5 {
-				font-family: Arial;
-				font-size: 11px;
-				text-align: left;
-				font-variant: normal;
-				font-weight: 400;
-				line-height: 15.6px;
-			}
-
-			p {
-				font-family: Arial;
-				font-size: 11px;
-				font-style: normal;
-				font-variant: normal;
-				font-weight: 400;
-			}
-
-			blockquote {
-				font-family: Bookman Old Style;
-				font-size: 21px;
-				font-style: normal;
-				font-variant: normal;
-				font-weight: 400;
-				line-height: 30px;
-			}
-
-			pre {
-				font-family: Bookman Old Style;
-				font-size: 13px;
-				font-style: normal;
-				font-variant: normal;
-				font-weight: 400;
-				line-height: 18.5667px;
-			}
-
-			.table1 {
-				font-family: arial;
-				font-size: 14px;
-				color: #444;
-				border-collapse: collapse;
-				width: 100%;
-				border: 1px solid #000;
-			}
-
-			.barcode {
-					font face: SF Atarian System Extended, Terminal;
-					font-size: 12pt;
-					padding: 1.5mm;
-					margin: 0;
-					vertical-align: top;
-					color: #000000;
-				}
-				.barcodecell {
-					font face: Code 128, Free 3 of 9 Extended;
-					font-size: 12pt;
-					text-align: center;
-					vertical-align: left;
-					padding: 0;
-				}
-
-
-			.table1 th {
-				background: #ccc;
-				color: #000;
-				font-weight: normal;
-				border: 1px solid #000;
-			}
-
-			.table1 td {
-				padding: 8px 20px;
-				border: 0px solid #000;
-			}
-
-			.table1 tr:hover {
-				background-color: #f5f5f5;
-			}
-
-			.table1 tr:nth-child(even) {
-				background-color: #f2f2f2;
-			}
 		</style>
 	</head>
 
@@ -184,28 +73,56 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 						ORDER BY a.b_noaset ASC";
 		$label = mysqli_query($koneksi,$qry);
 		?>
+		<?php 
+		include "../../config/phpqrcode/qrlib.php";	// Ini adalah letak pemyimpanan plugin qrcode
 
+		$tempdir = "../../_qrcodeimg/";		// Nama folder untuk pemyimpanan file qrcode
+
+		if (!file_exists($tempdir))		//jika folder belum ada, maka buat
+			mkdir($tempdir);
+
+		?>
 		<table width="295" height="60" border='0'>
-			<?php while ($barcode = mysqli_fetch_array($label)) {?>
+			<?php while ($barcode = mysqli_fetch_array($label)) {
+				// berikut adalah parameter qr code
+				$teks_qrcode	= "$barcode[kd_brg]$barcode[b_noaset] $barcode[kd_lokasi]";
+				$namafile		= "$barcode[b_noaset].png";
+				$quality		= "Q"; // ini ada 4 pilihan yaitu L (Low), M(Medium), Q(Good), H(High)
+				$ukuran			= 2; // 1 adalah yang terkecil, 10 paling besar
+				$padding		= 2;
+
+				QRCode::png($teks_qrcode, $tempdir . $namafile, $quality, $ukuran, $padding);
+			?>
 			<tr>
 					<td>
+					<font face="roboto" size="3">
 					<?php echo "$barcode[pebin]"; ?>.<?php echo "$barcode[pbi]"; ?>.<?php echo "$barcode[wilayah]"; ?>.<?php echo "$barcode[ukpb]"; ?>.<?php echo "$barcode[upkpb]"; ?>.<?php echo "$barcode[jk]"; ?> <?php echo "$barcode[thn_ang]"; ?>
+					</font>
 					</td>
 			</tr>
 			<tr>
 		    <td width="269">
-				Barcode
-				<br>
-				<?php echo "$barcode[b_kdbrg]"; ?> <?php echo "$barcode[b_noaset]"; ?>
-				<br>
+		    <font face="aero" size="6">
+				<b><?php echo "$barcode[b_kdbrg]"; ?> <?php echo "$barcode[b_noaset]"; ?></b>
+				</font><br>
+				<font face="roboto" size="2">
+				<?php echo "$barcode[ur_sskel]"; ?><br>
 				<?php echo "$barcode[merk_type]"; ?>
-				<br>
-				<h3><?php echo "$barcode[jns_trn]"; ?>_<?php echo "$barcode[thn_ang]"; ?> <?php echo "$barcode[periode]"; ?>
-				<br><br>
-					<?php echo "$barcode[nmukpb]"; ?>
-				</h3>
+				</font>
 				</td>
 			</tr>
+			<tr>
+				<td align="right">
+				<font face="roboto" size="2">				
+				<?php echo "$barcode[jns_trn]"; ?>_<?php echo "$barcode[thn_ang]"; ?> <?php echo "$barcode[periode]"; ?> <?php echo "$barcode[ukpb]"; ?>
+				<br>
+				<img src="../../_qrcodeimg/<?php echo $namafile; ?>"><br>
+				<?php echo "$barcode[nmukpb]"; ?>
+				</font><br>
+				<font face="roboto" size="1"><b>sensus_22</b></font>
+				</td>
+			</tr>
+			<tr><td height="14"></td></tr>
 <?php } ?>
 		</table>
 
