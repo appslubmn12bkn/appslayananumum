@@ -282,7 +282,7 @@ if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
                                     <button type=reset class='btn btn-dark btn-md'>
                                     <i class='fa fa-times'></i>&nbsp;&nbsp;&nbsp; Clear </button>
 
-                                    <a class='btn btn-danger btn-md' href=<?php echo "?module=bmnTambah"; ?>>
+                                    <a class='btn btn-danger btn-md' href=<?php echo "?module=bmnUpload"; ?>>
                                     <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali </a>
                                     </fieldset>
 
