@@ -102,7 +102,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 			</tr>
 			<tr>
 		    <td width="269">
-		    <font face="aero" size="6">
+		    <font face="Aero" size="6">
 				<b><?php echo "$barcode[b_kdbrg]"; ?> <?php echo "$barcode[b_noaset]"; ?></b>
 				</font><br>
 				<font face="Roboto" size="2">
