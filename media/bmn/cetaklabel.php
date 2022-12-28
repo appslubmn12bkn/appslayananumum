@@ -95,7 +95,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 			?>
 			<tr>
 					<td>
-					<font face="roboto" size="3">
+					<font face="Roboto" size="3">
 					<?php echo "$barcode[pebin]"; ?>.<?php echo "$barcode[pbi]"; ?>.<?php echo "$barcode[wilayah]"; ?>.<?php echo "$barcode[ukpb]"; ?>.<?php echo "$barcode[upkpb]"; ?>.<?php echo "$barcode[jk]"; ?> <?php echo "$barcode[thn_ang]"; ?>
 					</font>
 					</td>
@@ -105,7 +105,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 		    <font face="aero" size="6">
 				<b><?php echo "$barcode[b_kdbrg]"; ?> <?php echo "$barcode[b_noaset]"; ?></b>
 				</font><br>
-				<font face="roboto" size="2">
+				<font face="Roboto" size="2">
 				<?php echo "$barcode[ur_sskel]"; ?><br>
 				<?php echo "$barcode[merk_type]"; ?>
 				</font>
@@ -113,13 +113,13 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 			</tr>
 			<tr>
 				<td align="right">
-				<font face="roboto" size="2">				
+				<font face="Roboto" size="2">				
 				<?php echo "$barcode[jns_trn]"; ?>_<?php echo "$barcode[thn_ang]"; ?> <?php echo "$barcode[periode]"; ?> <?php echo "$barcode[ukpb]"; ?>
 				<br>
 				<img src="../../_qrcodeimg/<?php echo $namafile; ?>"><br>
 				<?php echo "$barcode[nmukpb]"; ?>
 				</font><br>
-				<font face="roboto" size="1"><b>sensus_22</b></font>
+				<font face="Roboto" size="1"><b>sensus_22</b></font>
 				</td>
 			</tr>
 			<tr><td height="14"></td></tr>
