@@ -1,6 +1,7 @@
 <?php
 session_start();
 ob_start();
+include('../../config/bar128.php');
 include('../../config/koneksi.php');
 include('../../config/inc.library.php');
 include('../../config/fungsi_indotgl.php');
@@ -62,9 +63,9 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 				font-size: 14px;
 				font-style: normal;
 				font-variant: normal;
-				text-align: center;
+				text-align: right;
 				font-weight: bold;
-				line-height: 15.4px;
+				line-height: 10.4px;
 			}
 
 			h4 {
@@ -120,6 +121,22 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 				border: 1px solid #000;
 			}
 
+			.barcode {
+					font face: SF Atarian System Extended, Terminal;
+					font-size: 12pt;
+					padding: 1.5mm;
+					margin: 0;
+					vertical-align: top;
+					color: #000000;
+				}
+				.barcodecell {
+					font face: Code 128, Free 3 of 9 Extended;
+					font-size: 12pt;
+					text-align: center;
+					vertical-align: left;
+					padding: 0;
+				}
+
 
 			.table1 th {
 				background: #ccc;
@@ -151,11 +168,11 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 		$nupAK = $_GET['nupAK'];
 
 		$qry=	" SELECT a.b_kdbrg, a.b_noaset, 
-						b.kdukpb, b.nmukpb, 
+						b.kdukpb, b.nmukpb, a.b_tglperlh,
 						b.pebin, b.pbi, b.wilayah,
 						b.ukpb, b.upkpb, b.jk,
 						c.kd_brg, c.ur_sskel,
-						d.merk_type, d.kondisi, d.thn_ang,
+						d.merk_type, d.kondisi, d.thn_ang, d.periode,
 						d.kd_brg, d.no_aset, d.jns_trn, d.kd_lokasi
 						FROM b_bmnbaru a
 						LEFT JOIN b_nmbmn c ON c.kd_brg=a.b_kdbrg
@@ -168,85 +185,29 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 		$label = mysqli_query($koneksi,$qry);
 		?>
 
-		<table width="350" height="60" border='0'>
+		<table width="295" height="60" border='0'>
 			<?php while ($barcode = mysqli_fetch_array($label)) {?>
 			<tr>
 					<td>
-						<font face='arial' size='2'>
-							&nbsp;<strong><?php echo "$barcode[pebin]"; ?>.<?php echo "$barcode[pbi]"; ?>.<?php echo "$barcode[wilayah]"; ?>.<?php echo "$barcode[ukpb]"; ?>.<?php echo "$barcode[upkpb]"; ?>.<?php echo "$barcode[jk]"; ?> <?php echo "$barcode[thn_ang]"; ?></strong>
-						</font>
+					<?php echo "$barcode[pebin]"; ?>.<?php echo "$barcode[pbi]"; ?>.<?php echo "$barcode[wilayah]"; ?>.<?php echo "$barcode[ukpb]"; ?>.<?php echo "$barcode[upkpb]"; ?>.<?php echo "$barcode[jk]"; ?> <?php echo "$barcode[thn_ang]"; ?>
 					</td>
 			</tr>
-			
 			<tr>
-					<td height="100">
-						<font face='arial' size='1' >
-							&nbsp;<strong><?php echo "$barcode[pebin]"; ?>.<?php echo "$barcode[pbi]"; ?>.<?php echo "$barcode[wilayah]"; ?>.<?php echo "$barcode[ukpb]"; ?>.<?php echo "$barcode[upkpb]"; ?>.<?php echo "$barcode[jk]"; ?> <?php echo "$barcode[thn_ang]"; ?></strong>
-						<br>
-						
-							&nbsp;<strong><?php echo "$barcode[nmukpb]"; ?></strong>
-						</font>
-					</td>
-			</tr>
-
-			<tr>
-					<td>
-						<font face='arial' size='2'>
-							&nbsp;<strong><?php echo "$barcode[nmukpb]"; ?></strong>
-						</font>
-					</td>
-			</tr>
-
-		</table>
-<br><br>
-
-
-
-
-
-
-
-
-		<table width="215" height="60" border='1'>
-			
-				<tr>
-					<td colspan='2'>
-						<font face='arial' size='1'>
-							&nbsp;<strong><?php echo "$barcode[pebin]"; ?>.<?php echo "$barcode[pbi]"; ?>.<?php echo "$barcode[wilayah]"; ?>.<?php echo "$barcode[ukpb]"; ?>.<?php echo "$barcode[upkpb]"; ?>.<?php echo "$barcode[jk]"; ?> <?php echo "$barcode[thn_ang]"; ?></strong>
-						<br>
-						
-							&nbsp;<strong><?php echo "$barcode[nmukpb]"; ?></strong>
-						</font>
-					</td>
-				</tr>
-				<tr>
-					<td width="30" height="60" valign='top'><img src="../../_qrcodeimg/<?php echo $namafile; ?>">
+		    <td width="269">
+				Barcode
+				<br>
+				<?php echo "$barcode[b_kdbrg]"; ?> <?php echo "$barcode[b_noaset]"; ?>
+				<br>
+				<?php echo "$barcode[merk_type]"; ?>
+				<br>
+				<h3><?php echo "$barcode[jns_trn]"; ?>_<?php echo "$barcode[thn_ang]"; ?> <?php echo "$barcode[periode]"; ?>
+				<br><br>
+					<?php echo "$barcode[nmukpb]"; ?>
+				</h3>
 				</td>
-					<td colspan="2">
-						<font face='arial' size='3'>
-						<strong><?php echo "$barcode[kd_brg]"; ?>&nbsp;<?php echo "$barcode[b_noaset]"; ?></strong>
-						</font>
-						<font face='arial' size='1'>
-						</font>
-						<br>
-						<font face='arial' size='1'>
-							<?php echo "$barcode[ur_sskel]"; ?> - <?php echo "$barcode[merk_type]"; ?><br>
-							<?php echo "$barcode[b_unik]"; ?> <br>
-							<?php echo "$barcode[r_ruangannama]"; ?> 
-						</font>
-					</td>
-				</tr>
-				<tr>
-					<td ></td>
-					<td height="10px"> </td>
-				</tr>
-			<?php } ?>
-
+			</tr>
+<?php } ?>
 		</table>
-
-
-
-
 
 	</body>
 
