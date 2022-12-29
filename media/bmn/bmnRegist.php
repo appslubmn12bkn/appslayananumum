@@ -44,9 +44,6 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                     <section class="content fade-in-up">
                     <a class='btn btn-primary btn-md' href=<?php echo "?module=bmnRegist&act=label"; ?>>
                     <i class="fa fa-print"></i>&nbsp;&nbsp;Cetak Label Registrasi / Barcode </a>
-
-                    <a class='btn btn-success btn-md' href=<?php echo "?module=bmnRegist&act=reLabel"; ?>>
-                    <i class="fa fa-print"></i>&nbsp;&nbsp;Cetak Label Registrasi / Barcode Ulang</a>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box">
@@ -82,7 +79,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                                   LEFT JOIN b_nmbmn b ON b.kd_brg = a.kd_brg
                                                                   LEFT JOIN b_bmnbaru c ON c.b_kdbrg = a.kd_brg AND c.b_noaset=a.no_aset 
                                                                   LEFT JOIN s_statuslbl d ON d.status_label=a.status_label
-                                                                  WHERE (a.status_label IN ('1','2'))
+                                                                  WHERE (a.status_label IN ('1'))
                                                                   ORDER BY a.kd_brg AND a.no_aset ASC";
                                                         $lbl    = mysqli_query($koneksi,$qry);
                                                         $no = 0;

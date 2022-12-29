@@ -78,6 +78,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 									merk_type	= '$_POST[b_merektype]',
 									jns_trn		= '$_POST[jns_trn]',
 									keterangan  = '$_POST[b_keterangan]',
+									status_label  = '1',
 									asal_perlh	= '$_POST[b_bmnasalperlh]'");
 
 			?>
@@ -112,11 +113,11 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 									WHERE b_kdbrg = '$_POST[kd_brg]' AND b_noaset = '$i'");
 
 			mysqli_query($koneksi, "UPDATE b_bmnsatker
-								SET	b_kdbrg		= '$_POST[kd_brg]',
-									b_noaset	= '$i',
+								SET	kd_brg		= '$_POST[kd_brg]',
+									no_aset		= '$i',
 									rph_aset	= '$_POST[b_rphaset]',
 									rph_sat		= '$_POST[b_rphsat]'
-									WHERE b_kdbrg = '$_POST[kd_brg]' AND b_noaset = '$i'");
+									WHERE kd_brg = '$_POST[kd_brg]' AND no_aset = '$i'");
 
 			?>
 				<script type="text/javascript">

@@ -43,7 +43,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 
                     <section class="content fade-in-up">
                     <a class='btn btn-primary btn-md' href=<?php echo "?module=bmnUpload&act=addBAST"; ?>>
-                    <i class="fa fa-plus"></i>&nbsp;&nbsp; Upload BAST Pengadaan / Transfer BMN </a>
+                    <i class="fa fa-plus"></i>&nbsp;&nbsp; Upload Bukti Tanda Terima Pengadaan / Transfer BMN </a>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box">

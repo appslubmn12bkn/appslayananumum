@@ -599,14 +599,15 @@ if ($_SESSION['LEVEL']=='admin' or $_SESSION['LEVEL'] == 'user'){
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">No BAST</label>
+                                        <label class="col-sm-2 col-form-label">No Dasar Transaksi</label>
                                         <div class="col-sm-10">
                                         <input type="text" class="form-control" name='b_bast' id="b_bast" value='<?php echo "$_POST[b_bast]"; ?>'>
+                                        <small>misal : kuitansi, tanda terima dsb</small>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Tanggal BAST</label>
+                                        <label class="col-sm-2 col-form-label">Tanggal Terima Transaksi</label>
                                         <div class="col-sm-2">
                                         <input type="text" maxlength="12" class="form-control datepicker" name='b_tglbast' id="b_tglbast" value='<?php echo "$_POST[b_tglbast]"; ?>'>
                                         </div>
