@@ -12,7 +12,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 } else {
     $cek = user_akses($_GET['module'], $_SESSION['NIP']);
     if ($cek == 1 or $_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
-      $aksi = "media/AKSI/savebmn.php";
+      $aksi = "media/AKSI/distbmn.php";
         switch ($_GET['act']) {
             default:
                 if ($_SESSION['LEVEL'] == 'admin' or $_SESSION['LEVEL'] == 'user') {
@@ -42,17 +42,17 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                     </section>
 
                     <section class="content fade-in-up">
-                    <a class='btn btn-primary btn-md' href=<?php echo "?module=bmnTambah&act=tambah"; ?>>
-                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Tambah Barang Milik Negara </a>
+                    <a class='btn btn-danger btn-md' href=<?php echo "?module=bmnDist&act=distUnit"; ?>>
+                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Distribusi BMN Ke Unit </a>
 
-                    <a class='btn btn-success btn-md' href=<?php echo "?module=bmnTambah&act=cetak"; ?>>
-                    <i class="fa fa-print"></i>&nbsp;&nbsp;Cetak Transaksi Tambah </a>
+                    <a class='btn btn-danger btn-md' href=<?php echo "?module=bmnDist&act=distBAST"; ?>>
+                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Buat Berita Acara Distribusi </a>
 
-                    <a class='btn btn-primary btn-md' href=<?php echo "?module=bmnTambah&act=upHarga"; ?>>
-                    <i class="fa fa-tag"></i>&nbsp;&nbsp;Update Harga </a>
+                    <a class='btn btn-primary btn-md' href=<?php echo "?module=bmnDist&act=cetakBAST"; ?>>
+                    <i class="fa fa-print"></i>&nbsp;&nbsp;Cetak BAST Distribusi Unit </a>
 
-                    <a class='btn btn-primary btn-md' href=<?php echo "?module=bmnTambah&act=upBAST"; ?>>
-                    <i class="fa fa-tag"></i>&nbsp;&nbsp;Update Berita Acara </a>
+                    <a class='btn btn-dark btn-md' href=<?php echo "?module=bmnDist&act=uploadBAST"; ?>>
+                    <i class="fa fa-upload"></i>&nbsp;&nbsp;Upload BAST Distribusi </a>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box">
@@ -71,14 +71,13 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                             <th bgcolor='#88c7f2'> KODEFIKASI</th>
                                                             <th bgcolor='#88c7f2'> NAMA BARANG</th>
                                                             <th bgcolor='#88c7f2'> NUP</th>
-                                                            <th bgcolor='#88c7f2'> TGL_BUKU </th>
+                                                            <th bgcolor='#88c7f2'> PEROLEHAN<br>TGL_BUKU </th>
                                                             <th bgcolor='#88c7f2'> PEROLEHAN </th>
                                                             <th bgcolor='#88c7f2'> KONDISI </th>
                                                             <th bgcolor='#88c7f2'> QTY</th>
                                                             <th bgcolor='#88c7f2'> TRX</th>
                                                             <th bgcolor='#88c7f2'> RPH ASET</th>
                                                             <th bgcolor='#88c7f2'> MEREK_TYPE </th>
-                                                            <th bgcolor='#88c7f2' width='25px'> UBAH</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -89,12 +88,15 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                                      a.b_tgltrn,a.b_tglperlh, 
                                                                      a.b_tglbuku,a.b_kondisi, 
                                                                      a.b_kuantitas, a.b_rphaset,
-                                                                     a.b_merektype, a.b_bmntrn,
-                                                                     b.kd_brg, b.ur_sskel, b.satuan
-                                                                FROM b_bmnbaru a
+                                                                     a.b_merektype, a.b_bmntrn, a.b_tercatat,
+                                                                     b.kd_brg, b.ur_sskel, b.satuan,
+                                                                     c.kd_brg, c.no_aset, c.status_label
+                                                                FROM b_bmndist a
                                                                 LEFT JOIN b_nmbmn b ON b.kd_brg = a.b_kdbrg
+                                                                LEFT JOIN b_bmnsatker c ON c.kd_brg = a.b_kdbrg AND c.no_aset=a.b_noaset 
                                                                 WHERE a.b_tglperlh BETWEEN '$rs[s_tglawal]' 
                                                                 AND '$rs[s_tglakhir]'
+                                                                AND c.status_label = '2' AND a.b_tercatat = '1'
                                                                 ORDER BY a.b_kdbrg AND a.b_noaset ASC");
 
                                                         $no = 0;
@@ -106,17 +108,15 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
                                                                 <td><?php echo "$r[b_kdbrg]"; ?></td>
                                                                 <td><?php echo "$r[ur_sskel]"; ?></td>
                                                                 <td><?php echo "$r[b_noaset]"; ?></td>
-                                                                <td><?php echo indotgl($r[b_tglbuku]); ?></td>
-                                                                <td><?php echo indotgl($r[b_tglperlh]); ?></td>
+                                                                <td><?php echo indotgl($r[b_tglperlh]); ?><br>
+                                                                    <?php echo indotgl($r[b_tglbuku]); ?>
+                                                                </td>
+                                                                <td></td>
                                                                 <td><?php echo "$r[b_kondisi]"; ?></td>
                                                                 <td><?php echo "$r[b_kuantitas]"; ?></td>
                                                                 <td><?php echo "$r[b_bmntrn]"; ?></td>
                                                                 <td><?php echo "$r[b_rphaset]"; ?></td>
                                                                 <td><?php echo "$r[b_merektype]"; ?></td>
-                                                                <td align="center">
-                                                                <a class='btn btn-danger btn-md' href=<?php echo "?module=bmnTambah&act=updateBmn&kdbrg=$r[b_kdbrg]&nup=$r[b_noaset]"; ?>><i class='fa fa-edit'></i>
-                                                                </a>
-                                                                </td>
                                                             </tr>
                                                             </tfoot>
                                                         <?php } ?>

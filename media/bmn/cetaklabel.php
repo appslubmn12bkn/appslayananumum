@@ -116,7 +116,7 @@ if (empty($_SESSION['UNAME']) and empty($_SESSION['PASSWORD'])) {
 		    <font face="Aero" size="6">
 				<b><?php echo "$barcode[b_kdbrg]"; ?> <?php echo "$barcode[b_noaset]"; ?></b>
 				</font><br>
-				<font face="Roboto" size="3">
+				<font face="Roboto" size="4">
 				<?php echo "$barcode[ur_sskel]"; ?><br>
 				<?php echo "$barcode[merk_type]"; ?>
 				</font>
